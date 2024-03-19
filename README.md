@@ -1,4 +1,4 @@
-# [turingmachine.io](http://turingmachine.io)
+# turing-sandbox
 
 This is a [Turing machine] visualizer designed for learning through visual thinking and creative exploration.
 
