@@ -1,0 +1,69 @@
+name: powers of two
+source code: |
+  input: '0000'
+  blank: _
+  start state: zero
+  synonyms:
+    accept:
+      R: accept
+    reject:
+      R: reject
+  table:
+    zero:
+      '0':
+        write: _
+        R: one
+      _: reject
+    one:
+      '0':
+        write: x
+        R: even
+      x: R
+      _: accept
+    even:
+      '0':
+        R: odd
+      x: R
+      _:
+        L: back
+    odd:
+      '0':
+        write: x
+        R: even
+      x: R
+      _: reject
+    back:
+      '0,x': L
+      _:
+        R: one
+    accept: {}
+    reject: {}
+
+  
+  # Matches strings of 0s whose length is a power of two.
+
+    # This example comes from the textbook
+    #   "Introduction to the Theory of Computation" (3rd edition, 2012)
+    #   by Michael Sipser
+    # The states have been renamed (from q1, q2, etc.)
+    # to make it easier to understand.
+  
+  # The idea: divide the length by 2 repeatedly until it reaches 1.
+
+  # To do this, cross off every other 0, one pass at a time.
+  # If any pass reads an odd number of 0s (a remainder), reject right away.
+  # Otherwise if every pass halves the length cleanly,
+  # the length must be a power of two (1*2^n for n ≥ 0).
+
+  # Note that since the first 0 is never crossed off, we can simply
+  # erase it on the first pass and start the count from 1 from then on.
+
+positions:
+  zero:   {x: 200, y: 200}
+  one:    {x: 400, y: 200}
+  even:   {x: 600, y: 200}
+
+  odd:    {x: 600, y: 385}
+  back:   {x: 500, y: 125}
+  accept: {x: 400, y: 300}
+  reject: {x: 200, y: 385}
