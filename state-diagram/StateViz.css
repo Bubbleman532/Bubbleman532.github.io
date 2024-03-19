@@ -1,0 +1,86 @@
+.machine {
+  text-align: center;
+}
+
+.machine > svg {
+  display: block;
+  margin: auto;
+}
+
+.node {
+  cursor: move;
+}
+
+.selected-node {
+  filter: drop-shadow(0px 0px 5px rgb(0 191 255 / 1));
+}
+
+.transition {
+  cursor: pointer;
+}
+
+.current-state {
+  stroke: gold;
+  stroke-width: 4px;
+  paint-order: fill;
+}
+
+text {
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.nodelabel {
+  font-size: 15px;
+  stroke: black;
+  stroke-width: 0.6;
+}
+
+.edgelabel {
+  font-size: 10px;
+  fill: #aaa;
+  letter-spacing: 0.2em;
+}
+
+.edgepath {
+  stroke: #ccc;
+  stroke-width: 5;
+  fill: none;
+}
+
+.edgepath.active-edge {
+  stroke: lightskyblue;
+}
+
+.edgepath.selected-edge {
+  filter: drop-shadow(0px 0px 3px rgb(0 191 255 / 1));
+}
+
+#arrowhead, #reversed-arrowhead {
+  stroke: #999;
+  fill: #999;
+}
+
+#active-arrowhead, #reversed-active-arrowhead {
+  stroke: lightskyblue;
+  fill: lightskyblue;
+}
+
+svg text{
+  user-select: none;
+}
+
+path.link {
+  fill: none;
+  stroke: #000;
+  stroke-width: 4px;
+  cursor: default;
+}
+
+path.link.dragline {
+  pointer-events: none;
+}
+
+path.link.hidden {
+  stroke-width: 0;
+}
