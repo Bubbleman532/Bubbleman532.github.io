@@ -1,11 +1,11 @@
 {
-  "name": "turing-machine-viz",
+  "name": "bubbleman532.github.io",
   "version": "1.0.0",
   "description": "Turing machine visualization and simulator",
-  "homepage": "http://turingmachine.io",
+  "homepage": "http://bubbleman532.github.io",
   "license": "BSD-3-Clause",
-  "author": "Andy Li <andy.srs.li@gmail.com>",
-  "repository": "aepsilon/turing-machine-viz",
+  "author": "Bubbleman532",
+  "repository": "Bubbleman532/Bubbleman532.github.io",
   "scripts": {
     "clean": "trash build/ || rm -r build/",
     "depgraph": "mkdir -p build/ && (cd src/ && madge . --dot) > build/depgraph.gv",
@@ -13,12 +13,13 @@
     "lint": "eslint --cache webpack.config.js src/",
     "prod": "export NODE_ENV=production; npm run lint && webpack --progress --colors --display-error-details",
     "start": "webpack-dev-server --progress --colors --display-error-details --host=0.0.0.0",
-    "watch": "webpack --watch --progress --colors --display-error-details"
+    "watch": "webpack --watch --progress --colors --display-error-details",
+    "deploy": "gh-pages -d build"
   },
-  "dependencies": {},
   "devDependencies": {
     "eslint": "^3.0.0",
     "file-loader": "^0.8.5",
+    "gh-pages": "^6.1.1",
     "raw-loader": "^0.5.1",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.16.5"

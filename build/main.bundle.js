@@ -1,6 +1,33 @@
 var main =
 webpackJsonp_name_([1],[
 /* 0 */
+/*!******************!*\
+  !*** multi main ***!
+  \******************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(/*! ./src/main.js */17);
+	(function webpackMissingModule() { throw new Error("Cannot find module \"D:\\bubbleman532.github.io\\build\""); }());
+
+
+/***/ }),
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */
 /*!*********************!*\
   !*** ./src/main.js ***!
   \*********************/
@@ -11,12 +38,12 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* eslint-env browser */
-	var TMDocumentController = __webpack_require__(/*! ./TMDocumentController */ 14),
-	    DocumentMenu = __webpack_require__(/*! ./DocumentMenu */ 19),
-	    examples = __webpack_require__(/*! ./examples */ 22),
-	    toDocFragment = __webpack_require__(/*! ./util */ 11).toDocFragment;
-	var ace = __webpack_require__(/*! ace-builds/src-min-noconflict */ 18);
-	var $ = __webpack_require__(/*! jquery */ 41); // for Bootstrap modal dialog events
+	var TMDocumentController = __webpack_require__(/*! ./TMDocumentController */ 18),
+	    DocumentMenu = __webpack_require__(/*! ./DocumentMenu */ 20),
+	    examples = __webpack_require__(/*! ./examples */ 23),
+	    toDocFragment = __webpack_require__(/*! ./util */ 10).toDocFragment;
+	var ace = __webpack_require__(/*! ace-builds/src-min-noconflict */ 9);
+	var $ = __webpack_require__(/*! jquery */ 42); // for Bootstrap modal dialog events
 	
 	// load up front so going offline doesn't break anything
 	// (for snippet placeholders, used by "New blank document")
@@ -40,7 +67,7 @@ webpackJsonp_name_([1],[
 	(function () {
 	  // Warn when falling back to RAM-only storage
 	  // NB. This mainly covers local storage errors and Safari's Private Browsing.
-	  if (!__webpack_require__(/*! ./storage */ 20).canUseLocalStorage) {
+	  if (!__webpack_require__(/*! ./storage */ 21).canUseLocalStorage) {
 	    addAlertPane('info', '<p>Local storage is unavailable. ' +
 	      'Your browser could be in Private Browsing mode, or it might not support <a href="http://caniuse.com/#feat=namevalue-storage" target="_blank">local storage</a>.</p>' +
 	      '<strong>Any changes will be lost after leaving the webpage.</strong>');
@@ -96,11 +123,11 @@ webpackJsonp_name_([1],[
 	    dialogNode: getId('importDialog'),
 	    importDocument: importDocument
 	  };
-	  __webpack_require__(/*! ./sharing/import */ 42).runImport(importArgs);
+	  __webpack_require__(/*! ./sharing/import */ 43).runImport(importArgs);
 	  // Init import dialog
 	  var $importPanel = $('#importPanel');
 	  $importPanel.one('show.bs.modal', function () {
-	    __webpack_require__(/*! ./sharing/import-panel */ 47).init({
+	    __webpack_require__(/*! ./sharing/import-panel */ 48).init({
 	      $dialog: $importPanel,
 	      gistIDForm: getId('gistIDForm'),
 	      importArgs: importArgs
@@ -108,7 +135,7 @@ webpackJsonp_name_([1],[
 	  });
 	  // Init export dialog
 	  var exportPanel = getId('exportPanel');
-	  __webpack_require__(/*! ./sharing/export-panel */ 48).init({
+	  __webpack_require__(/*! ./sharing/export-panel */ 49).init({
 	    $dialog: $(exportPanel),
 	    getCurrentDocument: function () {
 	      controller.save(); // IMPORTANT: save changes, otherwise data model is out of date
@@ -310,6 +337,7 @@ webpackJsonp_name_([1],[
 	      reset: getButton(sim, 'reset')
 	    },
 	    editor: {
+	      runlog: getButton(ed, 'editor-runlog'),
 	      load: getButton(ed, 'editor-load'),
 	      revert: getButton(ed, 'editor-revert')
 	    }
@@ -327,7 +355,7 @@ webpackJsonp_name_([1],[
 	controller.editor.session.setUseWrapMode(true);
 	$(function () {
 	  try {
-	    __webpack_require__(/*! ./kbdshortcuts */ 50).main(controller.editor.commands,
+	    __webpack_require__(/*! ./kbdshortcuts */ 51).main(controller.editor.commands,
 	      getId('kbdShortcutTable')
 	    );
 	  } catch (e) {
@@ -357,7 +385,7 @@ webpackJsonp_name_([1],[
 	(function () {
 	  // ...and the other tab loads it.
 	  var isReloading = false;
-	  __webpack_require__(/*! ./TMDocument */ 21).addOutsideChangeListener(function (docID, prop) {
+	  __webpack_require__(/*! ./TMDocument */ 22).addOutsideChangeListener(function (docID, prop) {
 	    if (docID === controller.getDocument().id && prop !== 'name' && !isReloading) {
 	      // Batch together property changes into one reload
 	      isReloading = true;
@@ -376,30 +404,17 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+/* 18 */
 /*!*************************************!*\
   !*** ./src/TMDocumentController.js ***!
   \*************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var TMSimulator = __webpack_require__(/*! ./TMSimulator */ 15),
-	    parser = __webpack_require__(/*! ./parser */ 16),
-	    util = __webpack_require__(/*! ./util */ 11),
-	    ace = __webpack_require__(/*! ace-builds/src-min-noconflict */ 18),
+	var TMSimulator = __webpack_require__(/*! ./TMSimulator */ 19),
+	    parser = __webpack_require__(/*! ./parser */ 15),
+	    util = __webpack_require__(/*! ./util */ 10),
+	    ace = __webpack_require__(/*! ace-builds/src-min-noconflict */ 9),
 	    d3 = __webpack_require__(/*! d3 */ 6);
 	var TMSpecError = parser.TMSpecError;
 	var YAMLException = parser.YAMLException;
@@ -422,6 +437,7 @@ webpackJsonp_name_([1],[
 	 * @param {HTMLButtonElement} buttons.simulator.run
 	 * @param {HTMLButtonElement} buttons.simulator.step
 	 * @param {HTMLButtonElement} buttons.simulator.reset
+	 * @param {HTMLButtonElement} buttons.editor.runlog For switching between editor and log
 	 * @param {HTMLButtonElement} buttons.editor.load For loading the editor source
 	 * @param {HTMLButtonElement} buttons.editor.revert For reverting the editor source
 	 * @param {TMDocument} document The document to load from and save to.
@@ -446,6 +462,39 @@ webpackJsonp_name_([1],[
 	
 	  var editorButtons = buttons.editor;
 	  var self = this;
+	
+	  util.setCookie('TMReload', '');
+	
+	  window.setInterval(function () {
+	    if (util.getCookie('TMReload')){
+	      self.loadEditorSource();
+	      // save whenever "Load" is pressed
+	      self.save();
+	      //self.reset();
+	      //self.editor.focus();
+	      util.setCookie('TMReload', '');
+	    }
+	  }, 50);
+	
+	  editorButtons.runlog
+	      .addEventListener('click', function () {
+	        var divLog = window.document.getElementById('run-log');
+	        var divEditor = window.document.getElementById('editor-container');
+	
+	        if (divLog.getAttribute("hidden") === "hidden") {
+	          divLog.removeAttribute("hidden");
+	          divEditor.setAttribute("hidden", "hidden");
+	          editorButtons.load.disabled = true;
+	          editorButtons.revert.disabled = true;
+	          editorButtons.runlog.innerHTML="Editor";
+	        } else {
+	          divEditor.removeAttribute("hidden");
+	          divLog.setAttribute("hidden", "hidden");
+	          editorButtons.load.disabled = false;
+	          editorButtons.revert.disabled = false;
+	          editorButtons.runlog.innerHTML="Run Log";
+	        }
+	      });
 	  editorButtons.load
 	      .addEventListener('click', function () {
 	        self.loadEditorSource();
@@ -581,7 +630,7 @@ webpackJsonp_name_([1],[
 	          var column = annot.column;
 	          div.append('strong')
 	              .text('Syntax error on ')
-	            .append('a')
+	             .append('a')
 	              .text('line ' + lineNum)
 	              .on('click', function () {
 	                self.editor.gotoLine(lineNum, column, true);
@@ -733,7 +782,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 15 */
+/* 19 */
 /*!****************************!*\
   !*** ./src/TMSimulator.js ***!
   \****************************/
@@ -741,10 +790,10 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var parseSpec = __webpack_require__(/*! ./parser */ 16).parseSpec,
+	var parseSpec = __webpack_require__(/*! ./parser */ 15).parseSpec,
 	    TMViz = __webpack_require__(/*! ./TMViz */ 1),
-	    watchInit = __webpack_require__(/*! ./watch */ 13).watchInit,
-	    values = __webpack_require__(/*! lodash */ 9).values;
+	    watchInit = __webpack_require__(/*! ./watch */ 16).watchInit,
+	    values = __webpack_require__(/*! lodash */ 12).values;
 	
 	/**
 	 * Turing machine simulator component.
@@ -786,7 +835,7 @@ webpackJsonp_name_([1],[
 	   * • Setting a new source code will attempt to persist the state node positions.
 	   * • To set a new machine, first call .clear(), then set the source code.
 	   */
-	  sourceCode: {
+	  sourceCode: { // this is the getter and setter for the yaml code inside the ace editor
 	    get: function () {
 	      return this.__sourceCode;
 	    },
@@ -888,297 +937,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 16 */
-/*!***********************!*\
-  !*** ./src/parser.js ***!
-  \***********************/
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var TM = __webpack_require__(/*! ./TuringMachine */ 2),
-	    jsyaml = __webpack_require__(/*! js-yaml */ 17),
-	    _ = __webpack_require__(/*! lodash */ 9);
-	
-	/**
-	 * Thrown when parsing a string that is valid as YAML but invalid
-	 * as a machine specification.
-	 *
-	 * Examples: unrecognized synonym, no start state defined,
-	 * transitioning to an undeclared state.
-	 *
-	 * A readable message is generated based on the details (if any) provided.
-	 * @param {string} reason  A readable error code.
-	 *   As an error code, this should be relatively short and not include runtime values.
-	 * @param {?Object} details Optional details. Possible keys:
-	 *                          problemValue, state, key, synonym, info, suggestion
-	 */
-	function TMSpecError(reason, details) {
-	  this.name = 'TMSpecError';
-	  this.stack = (new Error()).stack;
-	
-	  this.reason = reason;
-	  this.details = details || {};
-	}
-	TMSpecError.prototype = Object.create(Error.prototype);
-	TMSpecError.prototype.constructor = TMSpecError;
-	
-	// generate a formatted description in HTML
-	Object.defineProperty(TMSpecError.prototype, 'message', {
-	  get: function () {
-	    var header = this.reason;
-	    var details = this.details;
-	
-	    function code(str) { return '<code>' + str + '</code>'; }
-	    function showLoc(state, symbol, synonym) {
-	      if (state != null) {
-	        if (symbol != null) {
-	          return ' in the transition from state ' + code(state) + ' and symbol ' + code(symbol);
-	        } else {
-	          return ' for state ' + code(state);
-	        }
-	      } else if (synonym != null) {
-	        return ' in the definition of synonym ' + code(synonym);
-	      }
-	      return '';
-	    }
-	    var problemValue = details.problemValue ? ' ' + code(details.problemValue) : '';
-	    var location = showLoc(details.state, details.symbol, details.synonym);
-	    var sentences = ['<strong>' + header + problemValue + '</strong>' + location
-	      , details.info, details.suggestion]
-	      .filter(_.identity)
-	      .map(function (s) { return s + '.'; });
-	    if (location) { sentences.splice(1, 0, '<br>'); }
-	    return sentences.join(' ');
-	  },
-	  enumerable: true
-	});
-	
-	// type TransitionTable = {[key: string]: ?{[key: string]: string} }
-	// type TMSpec = {blank: string, start state: string, table: TransitionTable}
-	
-	// IDEA: check with flow (flowtype.org)
-	// throws YAMLException on YAML syntax error
-	// throws TMSpecError for an invalid spec (eg. no start state, transitioning to an undefined state)
-	// string -> TMSpec
-	function parseSpec(str) {
-	  var obj = jsyaml.safeLoad(str);
-	  // check for required object properties.
-	  // auto-convert .blank and 'start state' to string, for convenience.
-	  if (obj == null) { throw new TMSpecError('The document is empty',
-	    {info: 'Every Turing machine requires a <code>blank</code> tape symbol,' +
-	    ' a <code>start state</code>, and a transition <code>table</code>'}); }
-	  var detailsForBlank = {suggestion:
-	    'Examples: <code>blank: \' \'</code>, <code>blank: \'0\'</code>'};
-	  if (obj.blank == null) {
-	    throw new TMSpecError('No blank symbol was specified', detailsForBlank);
-	  }
-	  obj.blank = String(obj.blank);
-	  if (obj.blank.length !== 1) {
-	    throw new TMSpecError('The blank symbol must be a string of length 1', detailsForBlank);
-	  }
-	  obj.startState = obj['start state'];
-	  delete obj['start state'];
-	  if (obj.startState == null) {
-	    throw new TMSpecError('No start state was specified',
-	    {suggestion: 'Assign one using <code>start state: </code>'});
-	  }
-	  obj.startState = String(obj.startState);
-	  // parse synonyms and transition table
-	  checkTableType(obj.table); // parseSynonyms assumes a table object
-	  var synonyms = parseSynonyms(obj.synonyms, obj.table);
-	  obj.table = parseTable(synonyms, obj.table);
-	  // check for references to non-existent states
-	  if (!(obj.startState in obj.table)) {
-	    throw new TMSpecError('The start state has to be declared in the transition table');
-	  }
-	
-	  return obj;
-	}
-	
-	function checkTableType(val) {
-	  if (val == null) {
-	    throw new TMSpecError('Missing transition table',
-	    {suggestion: 'Specify one using <code>table:</code>'});
-	  }
-	  if (typeof val !== 'object') {
-	    throw new TMSpecError('Transition table has an invalid type',
-	      {problemValue: typeof val,
-	        info: 'The transition table should be a nested mapping from states to symbols to instructions'});
-	  }
-	}
-	
-	// (any, Object) -> ?SynonymMap
-	function parseSynonyms(val, table) {
-	  if (val == null) {
-	    return null;
-	  }
-	  if (typeof val !== 'object') {
-	    throw new TMSpecError('Synonyms table has an invalid type',
-	      {problemValue: typeof val,
-	        info: 'Synonyms should be a mapping from string abbreviations to instructions'
-	        + ' (e.g. <code>accept: {R: accept}</code>)'});
-	  }
-	  return _.mapValues(val, function (actionVal, key) {
-	    try {
-	      return parseInstruction(null, table, actionVal);
-	    } catch (e) {
-	      if (e instanceof TMSpecError) {
-	        e.details.synonym = key;
-	        if (e.reason === 'Unrecognized string') {
-	          e.details.info = 'Note that a synonym cannot be defined using another synonym';
-	        }
-	      }
-	      throw e;
-	    }
-	  });
-	}
-	
-	// (?SynonymMap, {[key: string]: string}) -> TransitionTable
-	function parseTable(synonyms, val) {
-	  return _.mapValues(val, function (stateObj, state) {
-	    if (stateObj == null) {
-	      // case: halting state
-	      return null;
-	    }
-	    if (typeof stateObj !== 'object') {
-	      throw new TMSpecError('State entry has an invalid type',
-	        {problemValue: typeof stateObj, state: state,
-	          info: 'Each state should map symbols to instructions. An empty map signifies a halting state.'});
-	    }
-	    return _.mapValues(stateObj, function (actionVal, symbol) {
-	      try {
-	        return parseInstruction(synonyms, val, actionVal);
-	      } catch (e) {
-	        if (e instanceof TMSpecError) {
-	          e.details.state = state;
-	          e.details.symbol = symbol;
-	        }
-	        throw e;
-	      }
-	    });
-	  });
-	}
-	
-	// omits null/undefined properties
-	// (?string, direction, ?string) -> {symbol?: string, move: direction, state?: string}
-	function makeInstruction(symbol, move, state) {
-	  return Object.freeze(_.omitBy({symbol: symbol, move: move, state: state},
-	    function (x) { return x == null; }));
-	}
-	
-	function checkTarget(table, instruct) {
-	  if (instruct.state != null && !(instruct.state in table)) {
-	    throw new TMSpecError('Undeclared state', {problemValue: instruct.state,
-	      suggestion: 'Make sure to list all states in the transition table and define their transitions (if any)'});
-	  }
-	  return instruct;
-	}
-	
-	// throws if the target state is undeclared (not in the table)
-	// type SynonymMap = {[key: string]: TMAction}
-	// (SynonymMap?, Object, string | Object) -> TMAction
-	function parseInstruction(synonyms, table, val) {
-	  return checkTarget(table, function () {
-	    switch (typeof val) {
-	      case 'string': return parseInstructionString(synonyms, val);
-	      case 'object': return parseInstructionObject(val);
-	      default: throw new TMSpecError('Invalid instruction type',
-	        {problemValue: typeof val,
-	          info: 'An instruction can be a string (a direction <code>L</code>/<code>R</code> or a synonym)'
-	            + ' or a mapping (examples: <code>{R: accept}</code>, <code>{write: \' \', L: start}</code>)'});
-	    }
-	  }());
-	}
-	
-	var moveLeft = Object.freeze({move: TM.MoveHead.left});
-	var moveRight = Object.freeze({move: TM.MoveHead.right});
-	
-	// case: direction or synonym
-	function parseInstructionString(synonyms, val) {
-	  if (val === 'L') {
-	    return moveLeft;
-	  } else if (val === 'R') {
-	    return moveRight;
-	  }
-	  // note: this order prevents overriding L/R in synonyms, as that would
-	  // allow inconsistent notation, e.g. 'R' and {R: ..} being different.
-	  if (synonyms && synonyms[val]) { return synonyms[val]; }
-	  throw new TMSpecError('Unrecognized string',
-	    {problemValue: val,
-	      info: 'An instruction can be a string if it\'s a synonym or a direction'});
-	}
-	
-	// type ActionObj = {write?: any, L: ?string} | {write?: any, R: ?string}
-	// case: ActionObj
-	function parseInstructionObject(val) {
-	  var symbol, move, state;
-	  if (val == null) { throw new TMSpecError('Missing instruction'); }
-	  // prevent typos: check for unrecognized keys
-	  (function () {
-	    var badKey;
-	    if (!Object.keys(val).every(function (key) {
-	      badKey = key;
-	      return key === 'L' || key === 'R' || key === 'write';
-	    })) {
-	      throw new TMSpecError('Unrecognized key',
-	        {problemValue: badKey,
-	          info: 'An instruction always has a tape movement <code>L</code> or <code>R</code>, '
-	        + 'and optionally can <code>write</code> a symbol'});
-	    }
-	  })();
-	  // one L/R key is required, with optional state value
-	  if ('L' in val && 'R' in val) {
-	    throw new TMSpecError('Conflicting tape movements',
-	    {info: 'Each instruction needs exactly one movement direction, but two were found'});
-	  }
-	  if ('L' in val) {
-	    move = TM.MoveHead.left;
-	    state = val.L;
-	  } else if ('R' in val) {
-	    move = TM.MoveHead.right;
-	    state = val.R;
-	  } else {
-	    throw new TMSpecError('Missing movement direction');
-	  }
-	  // write key is optional, but must contain a char value if present
-	  if ('write' in val) {
-	    var writeStr = String(val.write);
-	    if (writeStr.length === 1) {
-	      symbol = writeStr;
-	    } else {
-	      throw new TMSpecError('Write requires a string of length 1');
-	    }
-	  }
-	  return makeInstruction(symbol, move, state);
-	}
-	
-	exports.TMSpecError = TMSpecError;
-	exports.parseSpec = parseSpec;
-	// re-exports
-	exports.YAMLException = jsyaml.YAMLException;
-
-
-/***/ }),
-/* 17 */
-/*!*************************!*\
-  !*** external "jsyaml" ***!
-  \*************************/
-/***/ (function(module, exports) {
-
-	module.exports = jsyaml;
-
-/***/ }),
-/* 18 */
-/*!**********************!*\
-  !*** external "ace" ***!
-  \**********************/
-/***/ (function(module, exports) {
-
-	module.exports = ace;
-
-/***/ }),
-/* 19 */
+/* 20 */
 /*!*****************************!*\
   !*** ./src/DocumentMenu.js ***!
   \*****************************/
@@ -1187,8 +946,8 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* global document */
-	var KeyValueStorage = __webpack_require__(/*! ./storage */ 20).KeyValueStorage;
-	var TMDocument = __webpack_require__(/*! ./TMDocument */ 21);
+	var KeyValueStorage = __webpack_require__(/*! ./storage */ 21).KeyValueStorage;
+	var TMDocument = __webpack_require__(/*! ./TMDocument */ 22);
 	var d3 = __webpack_require__(/*! d3 */ 6);
 	var defaults = __webpack_require__(/*! lodash/fp */ 5).defaults; // NB. 2nd arg takes precedence
 	
@@ -1234,6 +993,35 @@ webpackJsonp_name_([1],[
 	  // Listen for selection changes
 	  var self = this;
 	  this.menu.addEventListener('change', function () {
+	    //if the editor isnt visible, hide the runlog, open the editor
+	    var divLog = window.document.getElementById('run-log');
+	    var divEditor = window.document.getElementById('editor-container');
+	    var editorLoad = window.document.getElementById('editor-load');
+	    var editorRevert = window.document.getElementById('editor-revert');
+	    var editorRunlog = window.document.getElementById('editor-runlog');
+	
+	    if (!(divLog.getAttribute("hidden") === "hidden")) {
+	      divEditor.removeAttribute("hidden");
+	      divLog.setAttribute("hidden", "hidden");
+	      editorLoad.disabled = false;
+	      editorRevert.disabled = false;
+	      editorRunlog.innerHTML="Run Log";
+	    }
+	
+	    //make sure to also reset the label boxes so we don't keep a selection accidentally
+	    var nodeLabel = window.document.getElementById('nodeLabel');
+	    var read = window.document.getElementById('read');
+	    var write = window.document.getElementById('write');
+	    nodeLabel.value = "";
+	    read.value = "";
+	    write.value = "";
+	
+	    //now make it look normal
+	    nodeLabel.disabled = true;
+	    window.document.getElementById('node-edit-controls').setAttribute("style", "display: flex");
+	    window.document.getElementById('transition-edit-controls').setAttribute("style", "display: none");
+	    window.document.getElementById('startState').disabled = true;
+	    window.document.getElementById('deleteNode').disabled = true;
 	    self.onChange(self.currentDocument, {type: 'open'});
 	  });
 	
@@ -1452,7 +1240,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /*!************************!*\
   !*** ./src/storage.js ***!
   \************************/
@@ -1460,7 +1248,7 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var isBrowserIEorEdge = __webpack_require__(/*! ./util */ 11).isBrowserIEorEdge;
+	var isBrowserIEorEdge = __webpack_require__(/*! ./util */ 10).isBrowserIEorEdge;
 	/* global localStorage:false, window:false */
 	
 	///////////////////////
@@ -1529,7 +1317,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /*!***************************!*\
   !*** ./src/TMDocument.js ***!
   \***************************/
@@ -1537,9 +1325,9 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var KeyValueStorage = __webpack_require__(/*! ./storage */ 20).KeyValueStorage,
-	    examples = __webpack_require__(/*! ./examples */ 22),
-	    util = __webpack_require__(/*! ./util */ 11),
+	var KeyValueStorage = __webpack_require__(/*! ./storage */ 21).KeyValueStorage,
+	    examples = __webpack_require__(/*! ./examples */ 23),
+	    util = __webpack_require__(/*! ./util */ 10),
 	    _ = __webpack_require__(/*! lodash/fp */ 5);
 	
 	/**
@@ -1693,7 +1481,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /*!*************************!*\
   !*** ./src/examples.js ***!
   \*************************/
@@ -1701,12 +1489,12 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var parseDocument = __webpack_require__(/*! ./sharing/format */ 23).parseDocument;
+	var parseDocument = __webpack_require__(/*! ./sharing/format */ 24).parseDocument;
 	var fromPairs = __webpack_require__(/*! lodash/fp */ 5).fromPairs;
 	
 	
 	function requireExample(name) {
-	  return __webpack_require__(/*! raw!./examples */ 24)("./" + name + '.yaml');
+	  return __webpack_require__(/*! raw!./examples */ 25)("./" + name + '.yaml');
 	}
 	
 	var examplePairs = [
@@ -1754,7 +1542,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /*!*******************************!*\
   !*** ./src/sharing/format.js ***!
   \*******************************/
@@ -1762,7 +1550,7 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var jsyaml = __webpack_require__(/*! js-yaml */ 17),
+	var jsyaml = __webpack_require__(/*! js-yaml */ 8),
 	    _ = __webpack_require__(/*! lodash/fp */ 5);
 	
 	// Document Serialization
@@ -1863,29 +1651,29 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /*!****************************************************!*\
   !*** ./src/examples ./~/raw-loader!^\.\/.*\.yaml$ ***!
   \****************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./_template.yaml": 25,
-		"./binaryAdd.yaml": 26,
-		"./binaryIncrement.yaml": 27,
-		"./binaryMult.yaml": 28,
-		"./busyBeaver3.yaml": 29,
-		"./busyBeaver4.yaml": 30,
-		"./copy1s.yaml": 31,
-		"./divisibleBy3.yaml": 32,
-		"./divisibleBy3Base10.yaml": 33,
-		"./lengthMult.yaml": 34,
-		"./matchBinaryStrings.yaml": 35,
-		"./matchThreeLengths.yaml": 36,
-		"./palindrome.yaml": 37,
-		"./powersOfTwo.yaml": 38,
-		"./repeat01.yaml": 39,
-		"./unaryMult.yaml": 40
+		"./_template.yaml": 26,
+		"./binaryAdd.yaml": 27,
+		"./binaryIncrement.yaml": 28,
+		"./binaryMult.yaml": 29,
+		"./busyBeaver3.yaml": 30,
+		"./busyBeaver4.yaml": 31,
+		"./copy1s.yaml": 32,
+		"./divisibleBy3.yaml": 33,
+		"./divisibleBy3Base10.yaml": 34,
+		"./lengthMult.yaml": 35,
+		"./matchBinaryStrings.yaml": 36,
+		"./matchThreeLengths.yaml": 37,
+		"./palindrome.yaml": 38,
+		"./powersOfTwo.yaml": 39,
+		"./repeat01.yaml": 40,
+		"./unaryMult.yaml": 41
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -1898,155 +1686,155 @@ webpackJsonp_name_([1],[
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 24;
+	webpackContext.id = 25;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /*!****************************************************!*\
   !*** ./~/raw-loader!./src/examples/_template.yaml ***!
   \****************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "input: '${2}'\r\nblank: '${3: }'\r\nstart state: ${4:start}\r\ntable:\r\n  ${4}:\r\n    ${5}\r\n"
+	module.exports = "input: '${2}'\r\nblank: '${3:_}'\r\nstart state: ${4:start}\r\ntable:\r\n  ${4}: {}\r\n"
 
 /***/ }),
-/* 26 */
+/* 27 */
 /*!****************************************************!*\
   !*** ./~/raw-loader!./src/examples/binaryAdd.yaml ***!
   \****************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: binary addition\r\nsource code: |\r\n  # Adds two binary numbers together.\r\n\r\n  # Format: Given input a+b where a and b are binary numbers,\r\n  # leaves c b on the tape, where c = a+b.\r\n  # Example: '11+1' => '100 1'.\r\n  input: '1011+11001'\r\n  blank: ' '\r\n  start state: right\r\n  table:\r\n    # Start at the second number's rightmost digit.\r\n    right:\r\n      [0,1,+]: R\r\n      ' ': {L: read}\r\n\r\n    # Add each digit from right to left:\r\n    # read the current digit of the second number,\r\n    read:\r\n      0: {write: c, L: have0}\r\n      1: {write: c, L: have1}\r\n      +: {write: ' ', L: rewrite}\r\n    # and add it to the next place of the first number,\r\n    # marking the place (using O or I) as already added.\r\n    have0: {[0,1]: L, +: {L: add0}}\r\n    have1: {[0,1]: L, +: {L: add1}}\r\n    add0:\r\n      [0,' ']: {write: O, R: back0}\r\n      1      : {write: I, R: back0}\r\n      [O,I]  : L\r\n    add1:\r\n      [0,' ']: {write: I, R: back1}\r\n      1      : {write: O, L: carry}\r\n      [O,I]  : L\r\n    carry:\r\n      [0,' ']: {write: 1, R: back1}\r\n      1      : {write: 0, L}\r\n    # Then, restore the current digit, and repeat with the next digit.\r\n    back0:\r\n      [0,1,O,I,+]: R\r\n      c: {write: 0, L: read}\r\n    back1:\r\n      [0,1,O,I,+]: R\r\n      c: {write: 1, L: read}\r\n\r\n    # Finish: rewrite place markers back to 0s and 1s.\r\n    rewrite:\r\n      O: {write: 0, L}\r\n      I: {write: 1, L}\r\n      [0,1]: L\r\n      ' ': {R: done}\r\n    done:\r\n\r\n\r\n  # Exercise:\r\n\r\n  # • Generate the Fibonacci sequence in binary, listed from right to left:\r\n  #   ...1101 1000 101 11 10 1 1 0\r\n  #   Hint: prefix the current number with a +, copy the previous number\r\n  #   and place it left of the +, run the adder, and repeat.\r\n  #   Example: '1 0' => '+1 0' => '0+1 0' => '1 1 0' => '+1 1 0' => ...\r\npositions:\r\n  right:   {x: 300, y: 130}\r\n  rewrite: {x: 500, y: 130}\r\n  done:    {x: 620, y: 130}\r\n\r\n  back0:  {x: 250, y: 250}\r\n  read:   {x: 400, y: 250}\r\n  back1:  {x: 550, y: 250}\r\n  carry:  {x: 650, y: 250}\r\n\r\n  add0:   {x: 150, y: 400}\r\n  have0:  {x: 300, y: 400}\r\n  have1:  {x: 500, y: 400}\r\n  add1:   {x: 650, y: 400}\r\n"
+	module.exports = "name: binary addition\r\nsource code: |\r\n  input: 1011+11001\r\n  blank: _\r\n  start state: right\r\n  table:\r\n    right:\r\n      '0,1,+': R\r\n      _:\r\n        L: read\r\n    read:\r\n      '0':\r\n        write: c\r\n        L: have0\r\n      '1':\r\n        write: c\r\n        L: have1\r\n      +:\r\n        write: _\r\n        L: rewrite\r\n    have0:\r\n      '0,1': L\r\n      +:\r\n        L: add0\r\n    have1:\r\n      '0,1': L\r\n      +:\r\n        L: add1\r\n    add0:\r\n      '1':\r\n        write: I\r\n        R: back0\r\n      '0,_':\r\n        write: O\r\n        R: back0\r\n      'O,I': L\r\n    add1:\r\n      '1':\r\n        write: O\r\n        L: carry\r\n      '0,_':\r\n        write: I\r\n        R: back1\r\n      'O,I': L\r\n    carry:\r\n      '1':\r\n        write: 0\r\n        L: carry\r\n      '0,_':\r\n        write: 1\r\n        R: back1\r\n    back0:\r\n        '0,1,O,I,+': R\r\n        c:\r\n          write: 0\r\n          L: read\r\n    back1:\r\n        '0,1,O,I,+': R\r\n        c:\r\n          write: 1\r\n          L: read\r\n    rewrite:\r\n        O:\r\n          write: 0\r\n          L: rewrite\r\n        I:\r\n          write: 1\r\n          L: rewrite\r\n        '0,1': L\r\n        _:\r\n          R: done\r\n    done: {}\r\n\r\n  \r\n  # Adds two binary numbers together.\r\n\r\n  # Format: Given input a+b where a and b are binary numbers,\r\n  # leaves c b on the tape, where c = a+b.\r\n  # Example: '11+1' => '100 1'.\r\n  \r\n  # Steps:\r\n  # Start at the second number's rightmost digit.\r\n  # Add each digit from right to left:\r\n  # read the current digit of the second number,\r\n  # and add it to the next place of the first number,\r\n  # marking the place (using O or I) as already added.\r\n  # Then, restore the current digit, and repeat with the next digit.\r\n  # Finish: rewrite place markers back to 0s and 1s.\r\n\r\n  # Exercise:\r\n\r\n  # • Generate the Fibonacci sequence in binary, listed from right to left:\r\n  #   ...1101 1000 101 11 10 1 1 0\r\n  #   Hint: prefix the current number with a +, copy the previous number\r\n  #   and place it left of the +, run the adder, and repeat.\r\n  #   Example: '1 0' => '+1 0' => '0+1 0' => '1 1 0' => '+1 1 0' => ...\r\npositions:\r\n  right:   {x: 300, y: 130}\r\n  rewrite: {x: 500, y: 130}\r\n  done:    {x: 620, y: 130}\r\n\r\n  back0:  {x: 250, y: 250}\r\n  read:   {x: 400, y: 250}\r\n  back1:  {x: 550, y: 250}\r\n  carry:  {x: 650, y: 250}\r\n\r\n  add0:   {x: 150, y: 400}\r\n  have0:  {x: 300, y: 400}\r\n  have1:  {x: 500, y: 400}\r\n  add1:   {x: 650, y: 400}\r\n"
 
 /***/ }),
-/* 27 */
+/* 28 */
 /*!**********************************************************!*\
   !*** ./~/raw-loader!./src/examples/binaryIncrement.yaml ***!
   \**********************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: binary increment\r\nsource code: |\r\n  # Adds 1 to a binary number.\r\n  input: '1011'\r\n  blank: ' '\r\n  start state: right\r\n  table:\r\n    # scan to the rightmost digit\r\n    right:\r\n      [1,0]: R\r\n      ' '  : {L: carry}\r\n    # then carry the 1\r\n    carry:\r\n      1      : {write: 0, L}\r\n      [0,' ']: {write: 1, L: done}\r\n    done:\r\n\r\n\r\n  # Exercises:\r\n\r\n  # • Modify the machine to always halt on the leftmost digit\r\n  #   (regardless of the number's length).\r\n  #   Hint: add a state between carry and done.\r\n\r\n  # • Make a machine that adds 2 instead of 1.\r\n  #   Hint: 2 is '10' in binary, so the last digit is unaffected.\r\n  #   Alternative hint: chain together two copies of the machine from\r\n  #   the first exercise (renaming the states of the second copy).\r\n\r\n  # • Make a machine to subtract 1.\r\n  #   To simplify things, assume the input is always greater than 0.\r\npositions:\r\n  right: {x: 230, y: 250}\r\n  carry: {x: 400, y: 250}\r\n  done: {x: 570, y: 250}\r\n"
+	module.exports = "name: binary increment\r\nsource code: |\r\n  input: '1011'\r\n  blank: _\r\n  start state: right\r\n  table:\r\n    right:\r\n      '1,0': R\r\n      _:\r\n        L: carry\r\n    carry:\r\n      '1':\r\n        write: 0\r\n        L: carry\r\n      '0,_':\r\n        write: 1\r\n        L: done\r\n    done: {}\r\n\r\n\r\n  # Adds 1 to a binary number.\r\n\r\n  # Steps:\r\n  # scan to the rightmost digit\r\n  # then carry the 1\r\n\r\n  # Exercises:\r\n\r\n  # • Modify the machine to always halt on the leftmost digit\r\n  #   (regardless of the number's length).\r\n  #   Hint: add a state between carry and done.\r\n\r\n  # • Make a machine that adds 2 instead of 1.\r\n  #   Hint: 2 is '10' in binary, so the last digit is unaffected.\r\n  #   Alternative hint: chain together two copies of the machine from\r\n  #   the first exercise (renaming the states of the second copy).\r\n\r\n  # • Make a machine to subtract 1.\r\n  #   To simplify things, assume the input is always greater than 0.\r\npositions:\r\n  right: {x: 230, y: 250}\r\n  carry: {x: 400, y: 250}\r\n  done: {x: 570, y: 250}\r\n"
 
 /***/ }),
-/* 28 */
+/* 29 */
 /*!*****************************************************!*\
   !*** ./~/raw-loader!./src/examples/binaryMult.yaml ***!
   \*****************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: binary multiplication\r\nsource code: |\r\n  # Multiplies two binary numbers together.\r\n\r\n  # Examples: '11*11' => '1001', '111*110' => '101010'.\r\n  input: '11*101' # 3*5 = 15 (1111 in binary)\r\n  blank: ' '\r\n  start state: start\r\n  table:\r\n    # Prefix the input with a '+', and go to the rightmost digit.\r\n    start:\r\n      [0,1]: {L: init}\r\n    init:\r\n      ' ': {write: '+', R: right}\r\n    right:\r\n      [0,1,'*']: R\r\n      ' ': {L: readB}\r\n\r\n    # Read and erase the last digit of the multiplier.\r\n    # If it's 1, add the current multiplicand.\r\n    # In any case, double the multiplicand afterwards.\r\n    readB:\r\n      0: {write: ' ', L: doubleL}\r\n      1: {write: ' ', L: addA}\r\n    addA:\r\n      [0,1]: L\r\n      '*': {L: read} # enter adder\r\n    # Double the multiplicand by appending a 0.\r\n    doubleL:\r\n      [0,1]: L\r\n      '*': {write: 0, R: shift}\r\n    double: # return from adder\r\n      [0,1,+]: R\r\n      '*': {write: 0, R: shift}\r\n    # Make room by shifting the multiplier right 1 cell.\r\n    shift:\r\n      0: {write: '*', R: shift0}\r\n      1: {write: '*', R: shift1}\r\n      ' ': {L: tidy} # base case: multiplier = 0\r\n    shift0:\r\n      0:   {R: shift0}\r\n      1:   {write: 0, R: shift1}\r\n      ' ': {write: 0, R: right}\r\n    shift1:\r\n      0:   {write: 1, R: shift0}\r\n      1:   {R: shift1}\r\n      ' ': {write: 1, R: right}\r\n\r\n    tidy:\r\n      [0,1]: {write: ' ', L}\r\n      +: {write: ' ', L: done}\r\n    done:\r\n\r\n  # This is the 'binary addition' machine almost verbatim.\r\n  # It's adjusted to keep the '+'\r\n  # and to lead to another state instead of halting.\r\n    read:\r\n      0: {write: c, L: have0}\r\n      1: {write: c, L: have1}\r\n      +: {L: rewrite} # keep the +\r\n    have0: {[0,1]: L, +: {L: add0}}\r\n    have1: {[0,1]: L, +: {L: add1}}\r\n    add0:\r\n      [0,' ']: {write: O, R: back0}\r\n      1      : {write: I, R: back0}\r\n      [O,I]  : L\r\n    add1:\r\n      [0,' ']: {write: I, R: back1}\r\n      1      : {write: O, L: carry}\r\n      [O,I]  : L\r\n    carry:\r\n      [0,' ']: {write: 1, R: back1}\r\n      1      : {write: 0, L}\r\n    back0:\r\n      [0,1,O,I,+]: R\r\n      c: {write: 0, L: read}\r\n    back1:\r\n      [0,1,O,I,+]: R\r\n      c: {write: 1, L: read}\r\n    rewrite:\r\n      O: {write: 0, L}\r\n      I: {write: 1, L}\r\n      [0,1]: L\r\n      ' ': {R: double} # when done, go to the 'double' state\r\n\r\n\r\n  # Remark:\r\n  # We can view the machine as expressing a recursive function:\r\n\r\n  #   multiply(a, b) = mult(0, a, b)\r\n\r\n  #   mult(acc, a, 0     ) = acc\r\n  #   mult(acc, a, 2k + 0) = mult(acc    , 2a, k)   where k ≠ 0\r\n  #   mult(acc, a, 2k + 1) = mult(acc + a, 2a, k)\r\n\r\n  # where a, b, and k are natural numbers.\r\n\r\n  # Each reduction maintains the invariant\r\n  #   mult(acc, a, b) = acc + a * b\r\n  # Note that mult's third argument (b) is always decreasing,\r\n  # so mult is guaranteed to halt.\r\n  # Eventually b reaches 0 and the result is simply the accumulator.\r\npositions:\r\n  start:  {x: 80 , y: 70}\r\n  init:   {x: 190, y: 70}\r\n  tidy:   {x: 730, y: 70}\r\n  done:   {x: 730, y: 180}\r\n\r\n  right:  {x: 300, y: 115}\r\n  shift:  {x: 600, y: 115}\r\n  shift1: {x: 450, y: 70}\r\n  shift0: {x: 450, y: 160}\r\n\r\n  readB:  {x: 300, y: 215}\r\n  addA:   {x: 160, y: 215}\r\n  doubleL: {x: 550, y: 215}\r\n\r\n  rewrite: {x: 363, y: 300}\r\n  double: {x: 650, y: 300}\r\n\r\n  back0:  {x: 160, y: 370}\r\n  read:   {x: 300, y: 370}\r\n  back1:  {x: 440, y: 370}\r\n  carry:  {x: 540, y: 370}\r\n\r\n  add0:   {x:  60, y: 470}\r\n  have0:  {x: 200, y: 470}\r\n  have1:  {x: 400, y: 470}\r\n  add1:   {x: 540, y: 470}\r\n"
+	module.exports = "name: binary multiplication\r\nsource code: |\r\n  input: 11*101\r\n  blank: _\r\n  start state: start\r\n  table:\r\n    start:\r\n      '0,1':\r\n        L: init\r\n    init:\r\n      _:\r\n        write: +\r\n        R: right\r\n    right:\r\n      '0,1,*': R\r\n      _:\r\n        L: readB\r\n    readB:\r\n      '0':\r\n        write: _\r\n        L: doubleL\r\n      '1':\r\n        write: _\r\n        L: addA\r\n    addA:\r\n      '0,1': L\r\n      '*':\r\n        L: read\r\n    doubleL:\r\n      '0,1': L\r\n      '*':\r\n        write: 0\r\n        R: shift\r\n    double:\r\n      '0,1,+': R\r\n      '*':\r\n        write: 0\r\n        R: shift\r\n    shift:\r\n      '0':\r\n        write: '*'\r\n        R: shift0\r\n      '1':\r\n        write: '*'\r\n        R: shift1\r\n      _:\r\n        L: tidy\r\n    shift0:\r\n      '0':\r\n        R: shift0\r\n      '1':\r\n        write: 0\r\n        R: shift1\r\n      _:\r\n        write: 0\r\n        R: right\r\n    shift1:\r\n      '0':\r\n        write: 1\r\n        R: shift0\r\n      '1':\r\n        R: shift1\r\n      _:\r\n        write: 1\r\n        R: right\r\n    tidy:\r\n      '0,1':\r\n        write: _\r\n        L: tidy\r\n      +:\r\n        write: _\r\n        L: done\r\n    done: {}\r\n    read:\r\n      '0':\r\n        write: c\r\n        L: have0\r\n      '1':\r\n        write: c\r\n        L: have1\r\n      +:\r\n        L: rewrite\r\n    have0:\r\n      '0,1': L\r\n      +:\r\n        L: add0\r\n    have1:\r\n      '0,1': L\r\n      +:\r\n        L: add1\r\n    add0:\r\n      '1':\r\n        write: I\r\n        R: back0\r\n      'O,I': L\r\n      '0,_':\r\n        write: O\r\n        R: back0\r\n    add1:\r\n      '1':\r\n        write: O\r\n        L: carry\r\n      'O,I': L\r\n      '0,_':\r\n        write: I\r\n        R: back1\r\n    carry:\r\n      '1':\r\n        write: 0\r\n        L: carry\r\n      '0,_':\r\n        write: 1\r\n        R: back1\r\n    back0:\r\n      '0,1,O,I,+': R\r\n      c:\r\n        write: 0\r\n        L: read\r\n    back1:\r\n      '0,1,O,I,+': R\r\n      c:\r\n        write: 1\r\n        L: read\r\n    rewrite:\r\n      O:\r\n        write: 0\r\n        L: rewrite\r\n      I:\r\n        write: 1\r\n        L: rewrite\r\n      '0,1': L\r\n      _:\r\n        R: double\r\n  \r\n  \r\n  # Multiplies two binary numbers together.\r\n\r\n  # Examples: '11*11' => '1001', '111*110' => '101010'.\r\n  \r\n  # Steps:\r\n  # Prefix the input with a '+', and go to the rightmost digit.\r\n  # Read and erase the last digit of the multiplier.\r\n  # If it's 1, add the current multiplicand.\r\n  # In any case, double the multiplicand afterwards.\r\n  # Make room by shifting the multiplier right 1 cell.\r\n  \r\n  # This uses the 'binary addition' machine almost verbatim.\r\n  # It's adjusted to keep the '+'\r\n  # and to lead to another state instead of halting.\r\n\r\n  # Remark:\r\n  # We can view the machine as expressing a recursive function:\r\n\r\n  #   multiply(a, b) = mult(0, a, b)\r\n\r\n  #   mult(acc, a, 0     ) = acc\r\n  #   mult(acc, a, 2k + 0) = mult(acc    , 2a, k)   where k ≠ 0\r\n  #   mult(acc, a, 2k + 1) = mult(acc + a, 2a, k)\r\n\r\n  # where a, b, and k are natural numbers.\r\n\r\n  # Each reduction maintains the invariant\r\n  #   mult(acc, a, b) = acc + a * b\r\n  # Note that mult's third argument (b) is always decreasing,\r\n  # so mult is guaranteed to halt.\r\n  # Eventually b reaches 0 and the result is simply the accumulator.\r\npositions:\r\n  start:  {x: 80 , y: 70}\r\n  init:   {x: 190, y: 70}\r\n  tidy:   {x: 730, y: 70}\r\n  done:   {x: 730, y: 180}\r\n\r\n  right:  {x: 300, y: 115}\r\n  shift:  {x: 600, y: 115}\r\n  shift1: {x: 450, y: 70}\r\n  shift0: {x: 450, y: 160}\r\n\r\n  readB:  {x: 300, y: 215}\r\n  addA:   {x: 160, y: 215}\r\n  doubleL: {x: 550, y: 215}\r\n\r\n  rewrite: {x: 363, y: 300}\r\n  double: {x: 650, y: 300}\r\n\r\n  back0:  {x: 160, y: 370}\r\n  read:   {x: 300, y: 370}\r\n  back1:  {x: 440, y: 370}\r\n  carry:  {x: 540, y: 370}\r\n\r\n  add0:   {x:  60, y: 470}\r\n  have0:  {x: 200, y: 470}\r\n  have1:  {x: 400, y: 470}\r\n  add1:   {x: 540, y: 470}\r\n"
 
 /***/ }),
-/* 29 */
+/* 30 */
 /*!******************************************************!*\
   !*** ./~/raw-loader!./src/examples/busyBeaver3.yaml ***!
   \******************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: 3-state busy beaver\r\nsource code: |\r\n  # A 3-state 2-symbol busy beaver for most non-blank symbols.\r\n  # It takes 13 steps and leaves 6 non-blank symbols on the tape.\r\n\r\n  # What's a \"busy beaver\"?\r\n  #   Suppose every possible Turing machine with n states and k symbols\r\n  #   (for instance, 3 states and 2 symbols) were started on\r\n  #   a blank tape with no input.\r\n  #   Some of the machines would never halt. Out of the ones that do halt,\r\n  #   a machine that leaves the most non-blank symbols on the tape\r\n  #   is called a busy beaver.\r\n  blank: '0'\r\n  start state: A\r\n  table:\r\n    A:\r\n      0: {write: 1, R: B}\r\n      1: {L: C}\r\n    B:\r\n      0: {write: 1, L: A}\r\n      1: R\r\n    C:\r\n      0: {write: 1, L: B}\r\n      1: {R: H}\r\n    H:\r\n\r\n  # An alternative criterion is halting after the most steps.\r\n  # This busy beaver takes the most steps (21) but only prints 5 1's:\r\n    # A:\r\n    #   0: {write: 1, R: B}\r\n    #   1: {R: H}\r\n    # B:\r\n    #   0: {write: 1, L: B}\r\n    #   1: {write: 0, R: C}\r\n    # C:\r\n    #   0: {write: 1, L}\r\n    #   1: {L: A}\r\n    # H:\r\n\r\n\r\n  # Exercise:\r\n\r\n  # • Consider Turing machines that have n states and k symbols.\r\n  #   Instead of a missing instruction, halting is denoted by\r\n  #   a transition to a special \"halt\" state (for a total of n+1 states).\r\n  #   How many different transition functions are possible?\r\n\r\n  #   Hint: Each instruction writes a symbol, moves left or right,\r\n  #   and goes to a state.\r\n  #   There is one instruction per combination of non-halt state & symbol.\r\n\r\n\r\n\r\n  #   Answer: (2k(n+1))^(nk)\r\npositions:\r\n  A: {x: 320, y: 296.188}\r\n  B: {x: 400, y: 157.624}\r\n  C: {x: 480, y: 296.188}\r\n  H: {x: 400, y: 376.188}\r\n"
+	module.exports = "name: 3-state busy beaver\r\nsource code: |\r\n  input: ''\r\n  blank: '0'\r\n  start state: A\r\n  table:\r\n    A:\r\n      '0':\r\n        write: 1\r\n        R: B\r\n      '1':\r\n        L: C\r\n    B:\r\n      '0':\r\n        write: 1\r\n        L: A\r\n      '1': R\r\n    C:\r\n      '0':\r\n        write: 1\r\n        L: B\r\n      '1':\r\n        R: H\r\n    H: {}\r\n  \r\n  \r\n  # A 3-state 2-symbol busy beaver for most non-blank symbols.\r\n  # It takes 13 steps and leaves 6 non-blank symbols on the tape.\r\n\r\n  # What's a \"busy beaver\"?\r\n  #   Suppose every possible Turing machine with n states and k symbols\r\n  #   (for instance, 3 states and 2 symbols) were started on\r\n  #   a blank tape with no input.\r\n  #   Some of the machines would never halt. Out of the ones that do halt,\r\n  #   a machine that leaves the most non-blank symbols on the tape\r\n  #   is called a busy beaver.\r\n\r\n  # An alternative criterion is halting after the most steps.\r\n  # This busy beaver takes the most steps (21) but only prints 5 1's:\r\n    # A:\r\n    #   0: {write: 1, R: B}\r\n    #   1: {R: H}\r\n    # B:\r\n    #   0: {write: 1, L: B}\r\n    #   1: {write: 0, R: C}\r\n    # C:\r\n    #   0: {write: 1, L}\r\n    #   1: {L: A}\r\n    # H: {}\r\n\r\n\r\n  # Exercise:\r\n\r\n  # • Consider Turing machines that have n states and k symbols.\r\n  #   Instead of a missing instruction, halting is denoted by\r\n  #   a transition to a special \"halt\" state (for a total of n+1 states).\r\n  #   How many different transition functions are possible?\r\n\r\n  #   Hint: Each instruction writes a symbol, moves left or right,\r\n  #   and goes to a state.\r\n  #   There is one instruction per combination of non-halt state & symbol.\r\n\r\n\r\n\r\n  #   Answer: (2k(n+1))^(nk)\r\npositions:\r\n  A: {x: 320, y: 300}\r\n  B: {x: 400, y: 156}\r\n  C: {x: 480, y: 300}\r\n  H: {x: 400, y: 376}\r\n"
 
 /***/ }),
-/* 30 */
+/* 31 */
 /*!******************************************************!*\
   !*** ./~/raw-loader!./src/examples/busyBeaver4.yaml ***!
   \******************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: 4-state busy beaver\r\nsource code: |\r\n  # A 4-state 2-symbol busy beaver\r\n  # that halts after 107 steps, leaving 13 1's on the tape.\r\n  # It takes the most steps *and* prints the most 1's.\r\n  blank: 0\r\n  start state: A\r\n  table:\r\n    A: {0: {write: 1, R: B}, 1:           {L: B}}\r\n    B: {0: {write: 1, L: A}, 1: {write: 0, L: C}}\r\n    C: {0: {write: 1, R: H}, 1:           {L: D}}\r\n    D: {0: {write: 1, R   }, 1: {write: 0, R: A}}\r\n    H:\r\n\r\n\r\n  # Finding a busy beaver requires considering every n-state k-symbol\r\n  # machine and proving either that it halts with no more non-blank symbols\r\n  # or that it never halts at all.\r\n\r\n  # Even with strategies to reduce the search space—\r\n  # including normalization, accelerated simulation, and automated proofs—\r\n  # there are still machines that show surprising complexity\r\n  # and require individual analysis.\r\n\r\n  # This 4-state busy beaver was proven by Allen Brady in 1983.\r\n  # Busy beavers for 5 states and above are as yet unknown.\r\n  # At the time of writing, the current 5-state 2-symbol contender\r\n  # takes 47,176,870 steps to halt, and the 6-state contender\r\n  # takes over 7.4 * 10^36534 steps\r\n  # (http://www.logique.jussieu.fr/~michel/bbc.html).\r\n  # \"Given that 5-state 2-symbol halting Turing machines can compute\r\n  # Collatz-like congruential functions, it may be very hard to find\r\n  # [the next busy beaver]\" (https://oeis.org/A060843).\r\n\r\n\r\n  # An entertaining read on busy beavers and their profoundness:\r\n\r\n  # • \"Who Can Name the Bigger Number?\"\r\n  #   http://www.scottaaronson.com/writings/bignumbers.html\r\npositions:\r\n  # square with side length 160\r\n  A: {x: 320, y: 170}\r\n  B: {x: 480, y: 170}\r\n\r\n  C: {x: 480, y: 330}\r\n  D: {x: 320, y: 330}\r\n  H: {x: 620, y: 330}\r\n"
+	module.exports = "name: 4-state busy beaver\r\nsource code: |\r\n  blank: 0\r\n  start state: A\r\n  table:\r\n    A:\r\n      '0':\r\n        write: 1\r\n        R: B\r\n      '1':\r\n        L: B\r\n    B:\r\n      '0':\r\n        write: 1\r\n        L: A\r\n      '1':\r\n        write: 0\r\n        L: C\r\n    C:\r\n      '0':\r\n        write: 1\r\n        R: H\r\n      '1':\r\n        L: D\r\n    D:\r\n      '0':\r\n        write: 1\r\n        R: D\r\n      '1':\r\n        write: 0\r\n        R: A\r\n    H: {}\r\n\r\n\r\n  # A 4-state 2-symbol busy beaver\r\n  # that halts after 107 steps, leaving 13 1's on the tape.\r\n  # It takes the most steps *and* prints the most 1's.\r\n\r\n  # Finding a busy beaver requires considering every n-state k-symbol\r\n  # machine and proving either that it halts with no more non-blank symbols\r\n  # or that it never halts at all.\r\n\r\n  # Even with strategies to reduce the search space—\r\n  # including normalization, accelerated simulation, and automated proofs—\r\n  # there are still machines that show surprising complexity\r\n  # and require individual analysis.\r\n\r\n  # This 4-state busy beaver was proven by Allen Brady in 1983.\r\n  # Busy beavers for 5 states and above are as yet unknown.\r\n  # At the time of writing, the current 5-state 2-symbol contender\r\n  # takes 47,176,870 steps to halt, and the 6-state contender\r\n  # takes over 7.4 * 10^36534 steps\r\n  # (http://www.logique.jussieu.fr/~michel/bbc.html).\r\n  # \"Given that 5-state 2-symbol halting Turing machines can compute\r\n  # Collatz-like congruential functions, it may be very hard to find\r\n  # [the next busy beaver]\" (https://oeis.org/A060843).\r\n\r\n\r\n  # An entertaining read on busy beavers and their profoundness:\r\n\r\n  # • \"Who Can Name the Bigger Number?\"\r\n  #   http://www.scottaaronson.com/writings/bignumbers.html\r\npositions:\r\n  # square with side length 160\r\n  A: {x: 320, y: 170}\r\n  B: {x: 480, y: 170}\r\n\r\n  C: {x: 480, y: 330}\r\n  D: {x: 320, y: 330}\r\n  H: {x: 620, y: 330}\r\n"
 
 /***/ }),
-/* 31 */
+/* 32 */
 /*!*************************************************!*\
   !*** ./~/raw-loader!./src/examples/copy1s.yaml ***!
   \*************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: copy 1s\r\nsource code: |\r\n  # Copies a string of consecutive 1s.\r\n  input: '111'\r\n  blank: 0\r\n  start state: each\r\n  table:\r\n    # mark the current 1 by erasing it\r\n    each:\r\n      0: {R: H}\r\n      1: {write: 0, R: sep}\r\n    # skip to the separator\r\n    sep:\r\n      0: {R: add}\r\n      1: R\r\n    # skip to the end of the copy and write a 1\r\n    add:\r\n      0: {write: 1, L: sepL}\r\n      1: R\r\n    # return to the separator\r\n    sepL:\r\n      0: {L: next}\r\n      1: L\r\n    # return to the erased 1, restore it, and then advance to the next 1\r\n    next:\r\n      0: {write: 1, R: each}\r\n      1: L\r\n    H:\r\n\r\n\r\n  # Exercises:\r\n\r\n  # • Edit the machine to copy the string indefinitely,\r\n  #   i.e. given the input '11', produce 11011011011...\r\n  #   Hint: this can be done by modifying only one transition.\r\n\r\n  # • Make a machine to output the endless sequence 1011011101111011111...\r\npositions:\r\n  each: {x: 400   , y: 100}\r\n  sep:  {x: 400.01, y: 250}\r\n  add:  {x: 400.02, y: 400}\r\n  sepL: {x: 250   , y: 250}\r\n  next: {x: 250.01, y: 100}\r\n  H:    {x: 550   , y: 100}\r\n"
+	module.exports = "name: copy 1s\r\nsource code: |\r\n  input: '111'\r\n  blank: 0\r\n  start state: each\r\n  table:\r\n    each:\r\n      '0':\r\n        R: H\r\n      '1':\r\n        write: 0\r\n        R: sep\r\n    sep:\r\n      '0':\r\n        R: add\r\n      '1': R\r\n    add:\r\n      '0':\r\n        write: 1\r\n        L: sepL\r\n      '1': R\r\n    sepL:\r\n      '0':\r\n        L: next\r\n      '1': L\r\n    next:\r\n      '0':\r\n        write: 1\r\n        R: each\r\n      '1': L\r\n    H: {}\r\n\r\n\r\n  # Copies a string of consecutive 1s.\r\n  \r\n  # Steps:\r\n  # mark the current 1 by erasing it\r\n  # skip to the separator\r\n  # skip to the end of the copy and write a 1\r\n  # return to the separator\r\n  # return to the erased 1, restore it, and then advance to the next 1\r\n\r\n  # Exercises:\r\n\r\n  # • Edit the machine to copy the string indefinitely,\r\n  #   i.e. given the input '11', produce 11011011011...\r\n  #   Hint: this can be done by modifying only one transition.\r\n\r\n  # • Make a machine to output the endless sequence 1011011101111011111...\r\npositions:\r\n  each: {x: 400, y: 100}\r\n  sep:  {x: 400, y: 250}\r\n  add:  {x: 400, y: 400}\r\n  sepL: {x: 250, y: 250}\r\n  next: {x: 250, y: 100}\r\n  H:    {x: 550, y: 100}\r\n"
 
 /***/ }),
-/* 32 */
+/* 33 */
 /*!*******************************************************!*\
   !*** ./~/raw-loader!./src/examples/divisibleBy3.yaml ***!
   \*******************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: divisible by 3\r\nsource code: |\r\n  # Checks if a binary number is divisible by 3.\r\n  input: '1001' # try '1111' (15), '10100' (20), '111001' (57)\r\n  blank: ' '\r\n  # How it works:\r\n\r\n  # Consider reading a binary number, say 10011 (19),\r\n  # from left to right one digit at a time.\r\n  # Each time a digit is read, the new value equals the new digit\r\n  # plus the old value shifted left one place (multiplied by 2).\r\n\r\n  # Digits  Value\r\n  # -------------\r\n  #         0\r\n  # 1       1\r\n  # 10      2\r\n  # 100     4\r\n  # 1001    9\r\n  # 10011   19\r\n\r\n  # Now instead of tracking the entire number, just track the remainder.\r\n  # It works the same way.\r\n  start state: q0\r\n  table:\r\n    q0:\r\n      0: R       # 2*0 + 0 = 0\r\n      1: {R: q1} # 2*0 + 1 = 1\r\n      ' ': {R: accept}\r\n    q1:\r\n      0: {R: q2} # 2*1 + 0 = 2\r\n      1: {R: q0} # 2*1 + 1 = 3\r\n    q2:\r\n      0: {R: q1} # 2*2 + 0 = 4\r\n      1: {R: q2} # 2*2 + 1 = 5\r\n    accept:\r\n\r\n\r\n  # Exercises:\r\n\r\n  # • Modify the machine to check if n-1 is divisible by 3,\r\n  #   where n is the input. That is, accept the binary of 1, 4, 7, 10, ...\r\n  #   Hint: this can be done without modifying the tape (no 'write').\r\n\r\n  # • Round the number up to the nearest multiple of 3.\r\n  #   Hint: do one pass right to find the remainder, then another pass left\r\n  #   to add. See the 'binary increment' example for how to add.\r\n\r\n  # • Round the number down to the nearest multiple of 3.\r\npositions:\r\n  q0: {x: 230, y: 250}\r\n  q1: {x: 400, y: 250}\r\n  q2: {x: 570, y: 250}\r\n  accept: {x: 230.01, y: 380}\r\n"
+	module.exports = "name: divisible by 3\r\nsource code: |\r\n  input: '1001'\r\n  blank: _\r\n  start state: q0\r\n  table:\r\n    q0:\r\n      '0': R\r\n      '1':\r\n        R: q1\r\n      _:\r\n        R: accept\r\n    q1:\r\n      '0':\r\n        R: q2\r\n      '1':\r\n        R: q0\r\n    q2:\r\n      '0':\r\n        R: q1\r\n      '1':\r\n        R: q2\r\n    accept: {}\r\n  \r\n  \r\n  # Checks if a binary number is divisible by 3.\r\n  # try '1111' (15), '10100' (20), '111001' (57)\r\n  \r\n  # How it works:\r\n\r\n  # Consider reading a binary number, say 10011 (19),\r\n  # from left to right one digit at a time.\r\n  # Each time a digit is read, the new value equals the new digit\r\n  # plus the old value shifted left one place (multiplied by 2).\r\n\r\n  # Digits  Value\r\n  # -------------\r\n  #         0\r\n  # 1       1\r\n  # 10      2\r\n  # 100     4\r\n  # 1001    9\r\n  # 10011   19\r\n\r\n  # Now instead of tracking the entire number, just track the remainder.\r\n  # It works the same way.\r\n\r\n  # Exercises:\r\n\r\n  # • Modify the machine to check if n-1 is divisible by 3,\r\n  #   where n is the input. That is, accept the binary of 1, 4, 7, 10, ...\r\n  #   Hint: this can be done without modifying the tape (no 'write').\r\n\r\n  # • Round the number up to the nearest multiple of 3.\r\n  #   Hint: do one pass right to find the remainder, then another pass left\r\n  #   to add. See the 'binary increment' example for how to add.\r\n\r\n  # • Round the number down to the nearest multiple of 3.\r\npositions:\r\n  q0: {x: 230, y: 250}\r\n  q1: {x: 400, y: 250}\r\n  q2: {x: 570, y: 250}\r\n  accept: {x: 230, y: 380}\r\n"
 
 /***/ }),
-/* 33 */
+/* 34 */
 /*!*************************************************************!*\
   !*** ./~/raw-loader!./src/examples/divisibleBy3Base10.yaml ***!
   \*************************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: divisible by 3 (base 10)\r\nsource code: |\r\n  # Checks if a base 10 number is divisible by 3.\r\n  input: 4728 # try 42, 57, 1337, 5328, 7521, 314159265\r\n  blank: ' '\r\n  # This uses the same idea as the base 2 version.\r\n  #\r\n  # To make things more interesting, we derive the step relation:\r\n  # Let x be the number left of the tape head,\r\n  #     d the digit under the head, and\r\n  #     x' the number up to and including the head.\r\n  # Then\r\n  #   x' = 10x + d .\r\n  # Notice 10 ≡ 1 (mod 3). Therefore\r\n  #   x' ≡ x + d (mod 3) .\r\n  # Each step simply adds the new digit's remainder mod 3.\r\n  start state: q0\r\n  table:\r\n    q0:\r\n      [0,3,6,9]: R     # 0 + 0 ≡ 0 (mod 3)\r\n      [1,4,7]: {R: q1} # 0 + 1 ≡ 1\r\n      [2,5,8]: {R: q2} # 0 + 2 ≡ 2\r\n      ' ': {R: accept}\r\n    q1:\r\n      [0,3,6,9]: R     # 1 + 0 ≡ 1\r\n      [1,4,7]: {R: q2} # 1 + 1 ≡ 2\r\n      [2,5,8]: {R: q0} # 1 + 2 ≡ 0\r\n    q2:\r\n      [0,3,6,9]: R     # 2 + 0 ≡ 2\r\n      [1,4,7]: {R: q0} # 2 + 1 ≡ 0\r\n      [2,5,8]: {R: q1} # 2 + 2 ≡ 1\r\n    accept:\r\n\r\n\r\n  # Exercises:\r\n\r\n  # • Check for divisibility by 5.\r\n  #   Hint: only 2 states (besides accept) are required.\r\n\r\n  # • Check for divisibility by 4.\r\n  #   Hint: use 4 states (besides accept).\r\npositions:\r\n  # centered equilateral triangle with side length 250\r\n  q0: {x: 275, y: 322.1688}\r\n  q1: {x: 400, y: 105.6624}\r\n  q2: {x: 525, y: 322.1688}\r\n  accept: {x: 275.01, y: 430}\r\n"
+	module.exports = "name: divisible by 3 (base 10)\r\nsource code: |\r\n  input: '4728'\r\n  blank: _\r\n  start state: q0\r\n  table:\r\n    q0:\r\n      '0,3,6,9': R\r\n      '1,4,7':\r\n        R: q1\r\n      '2,5,8':\r\n        R: q2\r\n      _:\r\n        R: accept\r\n    q1:\r\n      '0,3,6,9': R\r\n      '1,4,7':\r\n        R: q2\r\n      '2,5,8':\r\n        R: q0\r\n    q2:\r\n      '0,3,6,9': R\r\n      '1,4,7':\r\n        R: q0\r\n      '2,5,8':\r\n        R: q1\r\n    accept: {}\r\n  \r\n  \r\n  # Checks if a base 10 number is divisible by 3.\r\n  # try 42, 57, 1337, 5328, 7521, 314159265\r\n  \r\n  # This uses the same idea as the base 2 version.\r\n  #\r\n  # To make things more interesting, we derive the step relation:\r\n  # Let x be the number left of the tape head,\r\n  #     d the digit under the head, and\r\n  #     x' the number up to and including the head.\r\n  # Then\r\n  #   x' = 10x + d .\r\n  # Notice 10 ≡ 1 (mod 3). Therefore\r\n  #   x' ≡ x + d (mod 3) .\r\n  # Each step simply adds the new digit's remainder mod 3.\r\n  \r\n  # Exercises:\r\n\r\n  # • Check for divisibility by 5.\r\n  #   Hint: only 2 states (besides accept) are required.\r\n\r\n  # • Check for divisibility by 4.\r\n  #   Hint: use 4 states (besides accept).\r\npositions:\r\n  # centered equilateral triangle with side length 250\r\n  q0: {x: 275, y: 322}\r\n  q1: {x: 400, y: 105}\r\n  q2: {x: 525, y: 322}\r\n  accept: {x: 275, y: 430}\r\n"
 
 /***/ }),
-/* 34 */
+/* 35 */
 /*!*****************************************************!*\
   !*** ./~/raw-loader!./src/examples/lengthMult.yaml ***!
   \*****************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: multiplied lengths\r\nsource code: |\r\n  # Decides the language { a^(i)b^(j)c^(k) | i*j = k and i,j,k ≥ 1 }.\r\n  # (a's followed by b's then c's,\r\n  # where the number of a's multiplied by the number of b's\r\n  # equals the number of c's.)\r\n  input: aabbbcccccc # try abc, b, aabcbc, aabcc, aabbbbcccccccc\r\n  blank: ' '\r\n  start state: start\r\n\r\n  table:\r\n    # Check for the form a^(i)b^(j)c^(k) where i,j,k ≥ 1.\r\n    start:  {        a: {R: a+}}\r\n    a+:     {a: R,   b: {R: b+}}\r\n    b+:     {b: R,   c: {R: c+}}\r\n    c+:     {c: R, ' ': {L: left}}\r\n    left:\r\n      [a,b,c]: L\r\n      ' ': {R: eachA}\r\n    # Then check that i*j = k.\r\n    #   The approach is two nested loops:\r\n    #   For each 'a':\r\n    #     For each 'b':\r\n    #       Mark one 'c'\r\n    #   At the end, check that all c's are marked.\r\n    eachA:\r\n      a: {write: ' ', R: eachB}\r\n      b: {R: scan}\r\n    eachB:\r\n      a: R\r\n      b: {write: B, R: markC}\r\n      C: {L: nextA}\r\n    markC:\r\n      [b,C]: R\r\n      c: {write: C, L: nextB}\r\n    nextB:\r\n      [b,C]: L\r\n      B: {R: eachB}\r\n    nextA:\r\n      a: L\r\n      B: {write: b, L}\r\n      ' ': {R: eachA}\r\n\r\n    scan:\r\n      [b,C]: R\r\n      ' ': {R: accept}\r\n    accept:\r\npositions:\r\n  start:  {x: 180, y: 40}\r\n  a+:     {x: 180, y: 180}\r\n  b+:     {x: 180, y: 320}\r\n  c+:     {x: 180, y: 460}\r\n  left:   {x: 290, y: 320}\r\n\r\n  accept: {x: 400, y: 40}\r\n  eachA:  {x: 400, y: 180}\r\n  eachB:  {x: 400, y: 320}\r\n  markC:  {x: 400, y: 460}\r\n\r\n  scan:   {x: 560, y: 180}\r\n  nextA:  {x: 560, y: 320}\r\n  nextB:  {x: 560, y: 460}\r\n"
+	module.exports = "name: multiplied lengths\r\nsource code: |\r\n  input: aabbbcccccc\r\n  blank: _\r\n  start state: start\r\n  table:\r\n    start:\r\n      a:\r\n        R: a+\r\n    a+:\r\n      a: R\r\n      b:\r\n        R: b+\r\n    b+:\r\n      b: R\r\n      c:\r\n        R: c+\r\n    c+:\r\n      c: R\r\n      _:\r\n        L: left\r\n    left:\r\n      'a,b,c': L\r\n      _:\r\n        R: eachA\r\n    eachA:\r\n      a:\r\n        write: _\r\n        R: eachB\r\n      b:\r\n        R: scan\r\n    eachB:\r\n      a: R\r\n      b:\r\n        write: B\r\n        R: markC\r\n      C:\r\n        L: nextA\r\n    markC:\r\n      'b,C': R\r\n      c:\r\n        write: C\r\n        L: nextB\r\n    nextB:\r\n      'b,C': L\r\n      B:\r\n        R: eachB\r\n    nextA:\r\n      a: L\r\n      B:\r\n        write: b\r\n        L: nextA\r\n      _:\r\n        R: eachA\r\n    scan:\r\n      'b,C': R\r\n      _:\r\n        R: accept\r\n    accept: {}\r\n\r\n  \r\n  # Decides the language { a^(i)b^(j)c^(k) | i*j = k and i,j,k ≥ 1 }.\r\n  # (a's followed by b's then c's,\r\n  # where the number of a's multiplied by the number of b's\r\n  # equals the number of c's.)\r\n  \r\n  # Check for the form a^(i)b^(j)c^(k) where i,j,k ≥ 1.\r\n  # Then check that i*j = k.\r\n  #   The approach is two nested loops:\r\n  #   For each 'a':\r\n  #     For each 'b':\r\n  #       Mark one 'c'\r\n  #   At the end, check that all c's are marked.\r\n\r\npositions:\r\n  start:  {x: 180, y: 40}\r\n  a+:     {x: 180, y: 180}\r\n  b+:     {x: 180, y: 320}\r\n  c+:     {x: 180, y: 460}\r\n  left:   {x: 290, y: 320}\r\n\r\n  accept: {x: 400, y: 40}\r\n  eachA:  {x: 400, y: 180}\r\n  eachB:  {x: 400, y: 320}\r\n  markC:  {x: 400, y: 460}\r\n\r\n  scan:   {x: 560, y: 180}\r\n  nextA:  {x: 560, y: 320}\r\n  nextB:  {x: 560, y: 460}\r\n"
 
 /***/ }),
-/* 35 */
+/* 36 */
 /*!*************************************************************!*\
   !*** ./~/raw-loader!./src/examples/matchBinaryStrings.yaml ***!
   \*************************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: equal strings\r\nsource code: |\r\n  # Decides the language { w#w | w ∈ {0,1}* }\r\n  # (two equal binary strings separated by '#')\r\n  input: '01001#01001' # try '#', '1#10', '10#1', '10#10'\r\n  blank: ' '\r\n  # Two strings are equal if they are both the empty string,\r\n  # or they start with the same symbol and are equal thereafter.\r\n  start state: start\r\n  table:\r\n    start:\r\n      # Inductive case: start with the same symbol.\r\n      0: {write: ' ', R: have0}\r\n      1: {write: ' ', R: have1}\r\n      # Base case: empty string.\r\n      '#': {R: check}\r\n    have0:\r\n      [0,1]: R\r\n      '#': {R: match0}\r\n    have1:\r\n      [0,1]: R\r\n      '#': {R: match1}\r\n    match0:\r\n      x: R\r\n      0: {write: x, L: back}\r\n    match1:\r\n      x: R\r\n      1: {write: x, L: back}\r\n    back:\r\n      [0,1,'#',x]: L\r\n      ' ': {R: start}\r\n    check:\r\n      x: R\r\n      ' ': {R: accept}\r\n    accept:\r\n\r\n\r\n  # Exercises:\r\n\r\n  # • Accept if the second string is the bitwise complement\r\n  #   (1s and 0s swapped) of the first, e.g. accept '1101#0010'.\r\n\r\n  # • Check that a binary string has the same number of 0s and 1s;\r\n  #   eg., accept '001110' but reject '10010'.\r\n\r\n  # • Check if two strings are different.\r\n  #   Example: accept '00#001' and '0101#0111', but reject '1001#1001'.\r\npositions:\r\n  accept: {x: 80 , y: 250}\r\n  check:  {x: 190, y: 250}\r\n  # regular hexagon with side length 150\r\n  start:  {x: 300, y: 250}\r\n  back:   {x: 600, y: 250}\r\n  have1:  {x: 375, y: 120.10}\r\n  match1: {x: 525, y: 120.10}\r\n  have0:  {x: 375, y: 379.90}\r\n  match0: {x: 525, y: 379.90}\r\n"
+	module.exports = "name: equal strings\r\nsource code: |\r\n  input: 01001#01001\r\n  blank: _\r\n  start state: start\r\n  table:\r\n    start:\r\n      '0':\r\n        write: _\r\n        R: have0\r\n      '1':\r\n        write: _\r\n        R: have1\r\n      '#':\r\n        R: check\r\n    have0:\r\n      '0,1': R\r\n      '#':\r\n        R: match0\r\n    have1:\r\n      '0,1': R\r\n      '#':\r\n        R: match1\r\n    match0:\r\n      '0':\r\n        write: x\r\n        L: back\r\n      x: R\r\n    match1:\r\n      '1':\r\n        write: x\r\n        L: back\r\n      x: R\r\n    back:\r\n      '0,1,#,x': L\r\n      _:\r\n        R: start\r\n    check:\r\n      x: R\r\n      _:\r\n        R: accept\r\n    accept: {}\r\n  \r\n  \r\n  # Decides the language { w#w | w ∈ {0,1}* }\r\n  # (two equal binary strings separated by '#')\r\n  # Two strings are equal if they are both the empty string,\r\n  # or they start with the same symbol and are equal thereafter.\r\n\r\n  # Exercises:\r\n\r\n  # • Accept if the second string is the bitwise complement\r\n  #   (1s and 0s swapped) of the first, e.g. accept '1101#0010'.\r\n\r\n  # • Check that a binary string has the same number of 0s and 1s;\r\n  #   eg., accept '001110' but reject '10010'.\r\n\r\n  # • Check if two strings are different.\r\n  #   Example: accept '00#001' and '0101#0111', but reject '1001#1001'.\r\npositions:\r\n  accept: {x: 80 , y: 250}\r\n  check:  {x: 190, y: 250}\r\n  # regular hexagon with side length 150\r\n  start:  {x: 300, y: 250}\r\n  back:   {x: 600, y: 250}\r\n  have1:  {x: 375, y: 120.10}\r\n  match1: {x: 525, y: 120.10}\r\n  have0:  {x: 375, y: 379.90}\r\n  match0: {x: 525, y: 379.90}\r\n"
 
 /***/ }),
-/* 36 */
+/* 37 */
 /*!************************************************************!*\
   !*** ./~/raw-loader!./src/examples/matchThreeLengths.yaml ***!
   \************************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: three equal lengths\r\nsource code: |\r\n  # Decides the language { aⁿbⁿcⁿ | n ≥ 1 }, that is,\r\n  # accepts a's followed by b's then c's of the same length.\r\n  input: aabbcc # try bac, aabc, aabcc, aabcbc\r\n  blank: ' '\r\n  # Mark the first a, b, and c on each pass (by capitalizing them).\r\n  # All a's must precede all b's, which must precede all c's.\r\n  # When there are no more a's,\r\n  # all input symbols should have been marked.\r\n  start state: qA\r\n  table:\r\n    qA:\r\n      a: {write: A, R: qB}\r\n      B: {R: scan}\r\n    qB:\r\n      [a,B]: R\r\n      b: {write: B, R: qC}\r\n    qC:\r\n      [b,C]: R\r\n      c: {write: C, L: back}\r\n    back:\r\n      [a,B,b,C]: L\r\n      A: {R: qA}\r\n    scan:\r\n      [B,C]: R\r\n      ' ': {R: accept}\r\n    accept:\r\n\r\n\r\n  # Exercises:\r\n\r\n  # • Suppose a ledger starts from 0 and gains one dollar for each +\r\n  #   and loses one for each -. Reading left to right,\r\n  #   check that the account never goes into the negative.\r\n  #   Examples: accept '+-++' and '++-+--', reject '-++' and '++---+'.\r\n\r\n  # • Check parentheses for proper nesting,\r\n  #   e.g. accept '()(()()())' but reject '(()))(' and '(()('.\r\npositions:\r\n  qA: {x: 240, y: 250}\r\n  qB: {x: 400, y: 250}\r\n  qC: {x: 560, y: 250}\r\n  back:   {x: 400, y: 370}\r\n  scan:   {x: 320, y: 150}\r\n  accept: {x: 480, y: 150}\r\n"
+	module.exports = "name: three equal lengths\r\nsource code: |\r\n  input: aabbcc\r\n  blank: _\r\n  start state: qA\r\n  table:\r\n    qA:\r\n      a:\r\n        write: A\r\n        R: qB\r\n      B:\r\n        R: scan\r\n    qB:\r\n      'a,B': R\r\n      b:\r\n        write: B\r\n        R: qC\r\n    qC:\r\n      'b,C': R\r\n      c:\r\n        write: C\r\n        L: back\r\n    back:\r\n      'a,B,b,C': L\r\n      A:\r\n        R: qA\r\n    scan:\r\n      'B,C': R\r\n      _:\r\n        R: accept\r\n    accept: {}\r\n    \r\n  \r\n  # Decides the language { aⁿbⁿcⁿ | n ≥ 1 }, that is,\r\n  # accepts a's followed by b's then c's of the same length.\r\n\r\n  # Mark the first a, b, and c on each pass (by capitalizing them).\r\n  # All a's must precede all b's, which must precede all c's.\r\n  # When there are no more a's,\r\n  # all input symbols should have been marked.\r\n\r\n  # Exercises:\r\n\r\n  # • Suppose a ledger starts from 0 and gains one dollar for each +\r\n  #   and loses one for each -. Reading left to right,\r\n  #   check that the account never goes into the negative.\r\n  #   Examples: accept '+-++' and '++-+--', reject '-++' and '++---+'.\r\n\r\n  # • Check parentheses for proper nesting,\r\n  #   e.g. accept '()(()()())' but reject '(()))(' and '(()('.\r\npositions:\r\n  qA: {x: 240, y: 250}\r\n  qB: {x: 400, y: 250}\r\n  qC: {x: 560, y: 250}\r\n  back:   {x: 400, y: 370}\r\n  scan:   {x: 320, y: 150}\r\n  accept: {x: 480, y: 150}\r\n"
 
 /***/ }),
-/* 37 */
+/* 38 */
 /*!*****************************************************!*\
   !*** ./~/raw-loader!./src/examples/palindrome.yaml ***!
   \*****************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: palindrome\r\nsource code: |\r\n  # Accepts palindromes made of the symbols 'a' and 'b'\r\n  input: 'abba' # try a, ab, bb, babab\r\n  blank: ' '\r\n  start state: start\r\n  synonyms:\r\n    accept: {R: accept}\r\n    reject: {R: reject}\r\n  # A palindrome is either the empty string, a single symbol,\r\n  # or a (shorter) palindrome with the same symbol added to both ends.\r\n  table:\r\n    start:\r\n      a: {write: ' ', R: haveA}\r\n      b: {write: ' ', R: haveB}\r\n      ' ': accept # empty string\r\n    haveA:\r\n      [a,b]: R\r\n      ' ': {L: matchA}\r\n    haveB:\r\n      [a,b]: R\r\n      ' ': {L: matchB}\r\n    matchA:\r\n      a: {write: ' ', L: back} # same symbol at both ends\r\n      b: reject\r\n      ' ': accept # single symbol\r\n    matchB:\r\n      a: reject\r\n      b: {write: ' ', L: back} # same symbol at both ends\r\n      ' ': accept # single symbol\r\n    back:\r\n      [a,b]: L\r\n      ' ': {R: start}\r\n    accept:\r\n    reject:\r\n\r\n\r\n  # Exercise:\r\n\r\n  # • Modify the machine to include 'c' in the symbol alphabet,\r\n  #   so it also works for strings like 'cabbac'.\r\npositions:\r\n  haveA:  {x: 240, y: 185}\r\n  start:  {x: 400, y: 185}\r\n  haveB:  {x: 560, y: 185}\r\n\r\n  matchA: {x: 240, y: 315}\r\n  back:   {x: 400, y: 315}\r\n  matchB: {x: 560, y: 315}\r\n\r\n  accept: {x: 400, y: 55}\r\n  reject: {x: 400, y: 445}\r\n"
+	module.exports = "name: palindrome\r\nsource code: |\r\n  input: abba\r\n  blank: _\r\n  start state: start\r\n  synonyms:\r\n    accept:\r\n      R: accept\r\n    reject:\r\n      R: reject\r\n  table:\r\n    start:\r\n      a:\r\n        write: _\r\n        R: haveA\r\n      b:\r\n        write: _\r\n        R: haveB\r\n      _: accept\r\n    haveA:\r\n      'a,b': R\r\n      _:\r\n        L: matchA\r\n    haveB:\r\n      'a,b': R\r\n      _:\r\n        L: matchB\r\n    matchA:\r\n      a:\r\n        write: _\r\n        L: back\r\n      b: reject\r\n      _: accept\r\n    matchB:\r\n      a: reject\r\n      b:\r\n        write: _\r\n        L: back\r\n      _: accept\r\n    back:\r\n      'a,b': L\r\n      _:\r\n        R: start\r\n    accept: {}\r\n    reject: {}\r\n    \r\n  \r\n  # Accepts palindromes made of the symbols 'a' and 'b'\r\n  # A palindrome is either the empty string, a single symbol,\r\n  # or a (shorter) palindrome with the same symbol added to both ends.\r\n\r\n  # Exercise:\r\n\r\n  # • Modify the machine to include 'c' in the symbol alphabet,\r\n  #   so it also works for strings like 'cabbac'.\r\npositions:\r\n  haveA:  {x: 240, y: 185}\r\n  start:  {x: 400, y: 185}\r\n  haveB:  {x: 560, y: 185}\r\n\r\n  matchA: {x: 240, y: 315}\r\n  back:   {x: 400, y: 315}\r\n  matchB: {x: 560, y: 315}\r\n\r\n  accept: {x: 400, y: 55}\r\n  reject: {x: 400, y: 445}\r\n"
 
 /***/ }),
-/* 38 */
+/* 39 */
 /*!******************************************************!*\
   !*** ./~/raw-loader!./src/examples/powersOfTwo.yaml ***!
   \******************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: powers of two\r\nsource code: |\r\n  # Matches strings of 0s whose length is a power of two.\r\n\r\n  # This example comes from the textbook\r\n  #   \"Introduction to the Theory of Computation\" (3rd edition, 2012)\r\n  #   by Michael Sipser\r\n  # The states have been renamed (from q1, q2, etc.)\r\n  # to make it easier to understand.\r\n  input: '0000' # try '0', '000', '00000000'\r\n  blank: ' '\r\n  start state: zero\r\n  synonyms:\r\n    accept: {R: accept}\r\n    reject: {R: reject}\r\n  # The idea: divide the length by 2 repeatedly until it reaches 1.\r\n\r\n  # To do this, cross off every other 0, one pass at a time.\r\n  # If any pass reads an odd number of 0s (a remainder), reject right away.\r\n  # Otherwise if every pass halves the length cleanly,\r\n  # the length must be a power of two (1*2^n for n ≥ 0).\r\n\r\n  # Note that since the first 0 is never crossed off, we can simply\r\n  # erase it on the first pass and start the count from 1 from then on.\r\n  table:\r\n    zero:\r\n      0  : {write: ' ', R: one}\r\n      ' ': reject\r\n    # Base case: accept length of 1 = 2^0.\r\n    one:\r\n      0  : {write: x, R: even}\r\n      ' ': accept\r\n      x  : R\r\n    # Inductive case: divide by 2 and check for no remainder.\r\n    even:\r\n      0  : {R: odd}\r\n      ' ': {L: back} # return for another pass\r\n      x  : R\r\n    odd: # odd and > 1\r\n      0  : {write: x, R: even}\r\n      ' ': reject # odd number of 0s on this pass\r\n      x  : R\r\n    back:\r\n      ' ': {R: one}\r\n      [0,x]: L\r\n    accept:\r\n    reject:\r\npositions:\r\n  zero:   {x: 200, y: 200}\r\n  one:    {x: 400, y: 200}\r\n  even:   {x: 600, y: 200}\r\n\r\n  odd:    {x: 600, y: 385}\r\n  back:   {x: 500, y: 125}\r\n  accept: {x: 400, y: 300}\r\n  reject: {x: 200, y: 385}\r\n"
+	module.exports = "name: powers of two\r\nsource code: |\r\n  input: '0000'\r\n  blank: _\r\n  start state: zero\r\n  synonyms:\r\n    accept:\r\n      R: accept\r\n    reject:\r\n      R: reject\r\n  table:\r\n    zero:\r\n      '0':\r\n        write: _\r\n        R: one\r\n      _: reject\r\n    one:\r\n      '0':\r\n        write: x\r\n        R: even\r\n      x: R\r\n      _: accept\r\n    even:\r\n      '0':\r\n        R: odd\r\n      x: R\r\n      _:\r\n        L: back\r\n    odd:\r\n      '0':\r\n        write: x\r\n        R: even\r\n      x: R\r\n      _: reject\r\n    back:\r\n      '0,x': L\r\n      _:\r\n        R: one\r\n    accept: {}\r\n    reject: {}\r\n\r\n  \r\n  # Matches strings of 0s whose length is a power of two.\r\n\r\n    # This example comes from the textbook\r\n    #   \"Introduction to the Theory of Computation\" (3rd edition, 2012)\r\n    #   by Michael Sipser\r\n    # The states have been renamed (from q1, q2, etc.)\r\n    # to make it easier to understand.\r\n  \r\n  # The idea: divide the length by 2 repeatedly until it reaches 1.\r\n\r\n  # To do this, cross off every other 0, one pass at a time.\r\n  # If any pass reads an odd number of 0s (a remainder), reject right away.\r\n  # Otherwise if every pass halves the length cleanly,\r\n  # the length must be a power of two (1*2^n for n ≥ 0).\r\n\r\n  # Note that since the first 0 is never crossed off, we can simply\r\n  # erase it on the first pass and start the count from 1 from then on.\r\n\r\npositions:\r\n  zero:   {x: 200, y: 200}\r\n  one:    {x: 400, y: 200}\r\n  even:   {x: 600, y: 200}\r\n\r\n  odd:    {x: 600, y: 385}\r\n  back:   {x: 500, y: 125}\r\n  accept: {x: 400, y: 300}\r\n  reject: {x: 200, y: 385}\r\n"
 
 /***/ }),
-/* 39 */
+/* 40 */
 /*!***************************************************!*\
   !*** ./~/raw-loader!./src/examples/repeat01.yaml ***!
   \***************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: repeat 0 1\r\nsource code: |\r\n  # This is the first example machine given by Alan Turing in his 1936 paper\r\n  #   \"On Computable Numbers, with an Application to\r\n  #    the Entscheidungsproblem\".\r\n  # It simply writes the endless sequence 0 1 0 1 0 1...\r\n  blank: ' '\r\n  start state: b\r\n  table:\r\n    b:\r\n      ' ': {write: 0, R: c}\r\n    c:\r\n      ' ':           {R: e}\r\n    e:\r\n      ' ': {write: 1, R: f}\r\n    f:\r\n      ' ':           {R: b}\r\n\r\n\r\n  # (Turing uses the convention of leaving a gap after each output cell,\r\n  # reserving it for marking the cell. For instance, on a tape that\r\n  # contains '0 1x0 0 1 1y1y0y', x marks the leftmost 1 and y marks 110.)\r\npositions:\r\n  b: {x: 300, y: 200, fixed: false}\r\n  c: {x: 450, y: 150, fixed: false}\r\n  e: {x: 500, y: 300, fixed: false}\r\n  f: {x: 350, y: 350, fixed: false}\r\n"
+	module.exports = "name: repeat 0 1\r\nsource code: |\r\n  input: ''\r\n  blank: _\r\n  start state: b\r\n  table:\r\n    b:\r\n      _:\r\n        write: 0\r\n        R: c\r\n    c:\r\n      _:\r\n        R: e\r\n    e:\r\n      _:\r\n        write: 1\r\n        R: f\r\n    f:\r\n      _:\r\n        R: b\r\n\r\n\r\n  # This is the first example machine given by Alan Turing in his 1936 paper\r\n  #   \"On Computable Numbers, with an Application to\r\n  #    the Entscheidungsproblem\".\r\n  # It simply writes the endless sequence 0 1 0 1 0 1...\r\n\r\n  # (Turing uses the convention of leaving a gap after each output cell,\r\n  # reserving it for marking the cell. For instance, on a tape that\r\n  # contains '0 1x0 0 1 1y1y0y', x marks the leftmost 1 and y marks 110.)\r\npositions:\r\n  b: {x: 300, y: 200}\r\n  c: {x: 450, y: 150}\r\n  e: {x: 500, y: 300}\r\n  f: {x: 350, y: 350}\r\n"
 
 /***/ }),
-/* 40 */
+/* 41 */
 /*!****************************************************!*\
   !*** ./~/raw-loader!./src/examples/unaryMult.yaml ***!
   \****************************************************/
 /***/ (function(module, exports) {
 
-	module.exports = "name: unary multiplication\r\nsource code: |\r\n  # Multiplies together two unary numbers separated by a '*'.\r\n  # (Unary is like tallying. Here '||*|||' means 2 times 3.)\r\n  input: '||*|||' # try '*', '|*|||', '||||*||'\r\n  blank: ' '\r\n\r\n  # The idea:\r\n  #   multiply(0, b) = 0\r\n  #   multiply(a, b) = b + multiply(a-1, b)   when a > 0\r\n  start state: eachA\r\n  table:\r\n    # For each 1 in a, add a copy of b.\r\n    eachA:\r\n      '|': {write: ' ', R: toB}  # Inductive case: a > 0.\r\n      '*': {R: skip}             # Base case:      a = 0.\r\n    toB:\r\n      '|': R\r\n      '*': {R: eachB} # enter copier\r\n    nextA: # return from copier\r\n      ' ': {write: '|', R: eachA}\r\n      ['|','*']: L\r\n\r\n    skip:\r\n      '|': R\r\n      ' ': {R: done}\r\n    done:\r\n\r\n    # This is the 'copy 1s' machine, with ' ' as 0 and '|' as 1.\r\n    eachB:\r\n      ' ': {L: nextA}\r\n      '|': {write: ' ', R: sep}\r\n    sep:\r\n      ' ': {R: add}\r\n      '|': R\r\n    add:\r\n      ' ': {write: '|', L: sepL}\r\n      '|': R\r\n    sepL:\r\n      ' ': {L: nextB}\r\n      '|': L\r\n    nextB:\r\n      ' ': {write: '|', R: eachB}\r\n      '|': L\r\n\r\npositions:\r\n  eachA:  {x: 400, y:  50}\r\n  toB:    {x: 400, y: 150}\r\n  eachB:  {x: 400, y: 250}\r\n  sep:   {x: 400, y: 350}\r\n  add:   {x: 400, y: 450}\r\n\r\n  sepL:  {x: 280, y: 350}\r\n  nextB:  {x: 280, y: 250}\r\n\r\n  nextA:  {x: 280, y: 90}\r\n  skip:   {x: 520, y: 90}\r\n  done:   {x: 520, y: 190}\r\n"
+	module.exports = "name: unary multiplication\r\nsource code: |\r\n  input: '||*|||'\r\n  blank: _\r\n  start state: eachA\r\n  table:\r\n    eachA:\r\n      '|':\r\n        write: _\r\n        R: toB\r\n      '*':\r\n        R: skip\r\n    toB:\r\n      '|': R\r\n      '*':\r\n        R: eachB\r\n    nextA:\r\n      '|,*': L\r\n      _:\r\n        write: '|'\r\n        R: eachA\r\n    skip:\r\n      '|': R\r\n      _:\r\n        R: done\r\n    done: {}\r\n    eachB:\r\n      '|':\r\n        write: _\r\n        R: sep\r\n      _:\r\n        L: nextA\r\n    sep:\r\n      '|': R\r\n      _:\r\n        R: add\r\n    add:\r\n      '|': R\r\n      _:\r\n        write: '|'\r\n        L: sepL\r\n    sepL:\r\n      '|': L\r\n      _:\r\n        L: nextB\r\n    nextB:\r\n      '|': L\r\n      _:\r\n        write: '|'\r\n        R: eachB\r\n\r\n  \r\n  # Multiplies together two unary numbers separated by a '*'.\r\n  # (Unary is like tallying. Here '||*|||' means 2 times 3.)\r\n  \r\n  # The idea:\r\n  #   multiply(0, b) = 0\r\n  #   multiply(a, b) = b + multiply(a-1, b)   when a > 0\r\n  \r\n  # This machine directly utilises the 'copy 1s' machine:\r\n  # For each 1 in a, add a copy of b.\r\n\r\npositions:\r\n  eachA:  {x: 400, y:  50}\r\n  toB:    {x: 400, y: 150}\r\n  eachB:  {x: 400, y: 250}\r\n  sep:   {x: 400, y: 350}\r\n  add:   {x: 400, y: 450}\r\n\r\n  sepL:  {x: 280, y: 350}\r\n  nextB:  {x: 280, y: 250}\r\n\r\n  nextA:  {x: 280, y: 90}\r\n  skip:   {x: 520, y: 90}\r\n  done:   {x: 520, y: 190}\r\n"
 
 /***/ }),
-/* 41 */
+/* 42 */
 /*!*************************!*\
   !*** external "jQuery" ***!
   \*************************/
@@ -2055,7 +1843,7 @@ webpackJsonp_name_([1],[
 	module.exports = jQuery;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /*!*******************************!*\
   !*** ./src/sharing/import.js ***!
   \*******************************/
@@ -2064,15 +1852,15 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* eslint-env browser */
-	var CheckboxTable = __webpack_require__(/*! ./CheckboxTable */ 43);
-	var FileReaderPromise = __webpack_require__(/*! ./FileReaderPromise */ 44);
-	var format = __webpack_require__(/*! ./format */ 23);
-	var getGist = __webpack_require__(/*! ./gist */ 46).getGist;
+	var CheckboxTable = __webpack_require__(/*! ./CheckboxTable */ 44);
+	var FileReaderPromise = __webpack_require__(/*! ./FileReaderPromise */ 45);
+	var format = __webpack_require__(/*! ./format */ 24);
+	var getGist = __webpack_require__(/*! ./gist */ 47).getGist;
 	
-	var $ = __webpack_require__(/*! jquery */ 41);
+	var $ = __webpack_require__(/*! jquery */ 42);
 	var _ = __webpack_require__(/*! lodash/fp */ 5);
 	var d3 = __webpack_require__(/*! d3 */ 6);
-	var Promise = __webpack_require__(/*! bluebird */ 45);  // eslint-disable-line no-shadow
+	var Promise = __webpack_require__(/*! bluebird */ 46);  // eslint-disable-line no-shadow
 	
 	
 	function decodeFormURLComponent(str) {
@@ -2596,7 +2384,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /*!**************************************!*\
   !*** ./src/sharing/CheckboxTable.js ***!
   \**************************************/
@@ -2605,7 +2393,7 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	// var d3 = require('d3');
-	var $ = __webpack_require__(/*! jquery */ 41); // for event delegation
+	var $ = __webpack_require__(/*! jquery */ 42); // for event delegation
 	
 	function identity(x) { return x; }
 	function head(array) { return array[0]; }
@@ -2732,7 +2520,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /*!******************************************!*\
   !*** ./src/sharing/FileReaderPromise.js ***!
   \******************************************/
@@ -2741,7 +2529,7 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* global FileReader:false */
-	var Promise = __webpack_require__(/*! bluebird */ 45); // eslint-disable-line no-shadow
+	var Promise = __webpack_require__(/*! bluebird */ 46); // eslint-disable-line no-shadow
 	
 	// arguments are forwarded to FileReader.readAsText
 	// (Blob, ?encoding) -> Promise
@@ -2767,7 +2555,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /*!**************************!*\
   !*** external "Promise" ***!
   \**************************/
@@ -2776,7 +2564,7 @@ webpackJsonp_name_([1],[
 	module.exports = Promise;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /*!*****************************!*\
   !*** ./src/sharing/gist.js ***!
   \*****************************/
@@ -2784,8 +2572,8 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var $ = __webpack_require__(/*! jquery */ 41);
-	var Promise = __webpack_require__(/*! bluebird */ 45); // eslint-disable-line no-shadow
+	var $ = __webpack_require__(/*! jquery */ 42);
+	var Promise = __webpack_require__(/*! bluebird */ 46); // eslint-disable-line no-shadow
 	
 	Promise.config({
 	  cancellation: true
@@ -2838,7 +2626,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /*!*************************************!*\
   !*** ./src/sharing/import-panel.js ***!
   \*************************************/
@@ -2847,8 +2635,8 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* global document: false */
-	var docimport = __webpack_require__(/*! ./import */ 42);
-	var format = __webpack_require__(/*! ./format */ 23);
+	var docimport = __webpack_require__(/*! ./import */ 43);
+	var format = __webpack_require__(/*! ./format */ 24);
 	var _ = __webpack_require__(/*! lodash/fp */ 5);
 	var d3 = __webpack_require__(/*! d3 */ 6);
 	
@@ -2996,7 +2784,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /*!*************************************!*\
   !*** ./src/sharing/export-panel.js ***!
   \*************************************/
@@ -3005,10 +2793,10 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* eslint-env browser */
-	var format = __webpack_require__(/*! ./format */ 23);
-	var createGist = __webpack_require__(/*! ./gist */ 46).createGist;
-	var Clipboard = __webpack_require__(/*! clipboard */ 49);
-	var $ = __webpack_require__(/*! jquery */ 41); // for bootstrap tooltip
+	var format = __webpack_require__(/*! ./format */ 24);
+	var createGist = __webpack_require__(/*! ./gist */ 47).createGist;
+	var Clipboard = __webpack_require__(/*! clipboard */ 50);
+	var $ = __webpack_require__(/*! jquery */ 42); // for bootstrap tooltip
 	
 	// https://github.com/Modernizr/Modernizr/blob/master/feature-detects/a/download.js
 	var canUseDownloadAttribute =
@@ -3228,7 +3016,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /*!****************************!*\
   !*** external "Clipboard" ***!
   \****************************/
@@ -3237,7 +3025,7 @@ webpackJsonp_name_([1],[
 	module.exports = Clipboard;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /*!*****************************!*\
   !*** ./src/kbdshortcuts.js ***!
   \*****************************/
