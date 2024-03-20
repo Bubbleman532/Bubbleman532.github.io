@@ -8,6 +8,7 @@ var jsyaml = require('js-yaml');
 var ace = require('ace-builds/src-min-noconflict');
 var _ = require('lodash/fp');
 var assign = require('lodash').assign; // need mutable assign()
+var KeyValueStorage = require('../storage').KeyValueStorage;
 
 //diagram direct edit form fields
 var nodeEditControls = window.document.getElementById('node-edit-controls');
@@ -572,7 +573,7 @@ function StateViz(container, nodes, linkArray) {
           var machine = jsyaml.safeLoad(source.getValue());
           machine.table[mousedownNode.label]['*'] = {L: mouseupNode.label};
           source.setValue(jsyaml.safeDump(machine));
-          util.setCookie('TMReload', 'new link');
+          KeyValueStorage.write('TMReload', 'new link');
           disableEditing();
         }
 
@@ -681,7 +682,7 @@ function StateViz(container, nodes, linkArray) {
     source.setValue(jsyaml.safeDump(machine));
     disableEditing();
     nodeLabel.value = '';
-    util.setCookie('TMReload', 'node');
+    KeyValueStorage.write('TMReload', 'node');
   });
 
   //deselect node
@@ -691,7 +692,7 @@ function StateViz(container, nodes, linkArray) {
     if (selectedNode || selectedLink) {
       disableEditing();
       resetMouseVars();
-      util.setCookie('TMReload', 'reload');
+      KeyValueStorage.write('TMReload', 'reload');
     }
   });
 
@@ -770,7 +771,7 @@ function StateViz(container, nodes, linkArray) {
               }
               source.setValue(jsyaml.safeDump(machine));
               disableEditing();
-              util.setCookie('TMReload', 'deleted a node');
+              KeyValueStorage.write('TMReload', 'deleted a node');
             } else {
               //don't let the user delete the start state
               throwMachineError("Change the start state before trying to delete this node");
@@ -783,7 +784,7 @@ function StateViz(container, nodes, linkArray) {
             //we're finished here
             source.setValue(jsyaml.safeDump(machine));
             disableEditing();
-            util.setCookie('TMReload', 'delete link');
+            KeyValueStorage.write('TMReload', 'delete link');
           }
           //reload the simulation
           break;
@@ -857,7 +858,7 @@ nodeLabel.addEventListener('focusout', function() {
       }
       //we're finished here
       source.setValue(jsyaml.safeDump(machine));
-      util.setCookie('TMReload', 'node name change');
+      KeyValueStorage.write('TMReload', 'node name change');
     }
   }
 });
@@ -868,7 +869,7 @@ startState.addEventListener('change', function(){
   machine['start state'] = nodeLabel.value;
   startState.disabled = true;
   source.setValue(jsyaml.safeDump(machine));
-  util.setCookie('TMReload', 'start state');
+  KeyValueStorage.write('TMReload', 'start state');
 })
 
 deleteNode.addEventListener('click', function (){
@@ -890,7 +891,7 @@ deleteNode.addEventListener('click', function (){
     }
     source.setValue(jsyaml.safeDump(machine));
     disableEditing();
-    util.setCookie('TMReload', 'deleted a node');
+    KeyValueStorage.write('TMReload', 'deleted a node');
   } else {
     //don't let the user delete the start state
     throwMachineError("Change the start state before trying to delete this node");
@@ -920,7 +921,7 @@ read.addEventListener('focusout', function () {
       delete machine['table'][selectedLink.source['label']][transitionContents[0]];
       //we're finished here
       source.setValue(jsyaml.safeDump(machine));
-      util.setCookie('TMReload', 'transition changed');
+      KeyValueStorage.write('TMReload', 'transition changed');
     } else {
       //throw error if any read symbol appears elsewhere in the source node's table
       throwMachineError("One or more entered read symbol(s) appear(s) in another transition");
@@ -943,7 +944,7 @@ write.addEventListener('focusout', function () {
       }
       //we're finished here
       source.setValue(jsyaml.safeDump(machine));
-      util.setCookie('TMReload', 'transition write changed');
+      KeyValueStorage.write('TMReload', 'transition write changed');
     }
   } else {
     if(write.value) {
@@ -954,7 +955,7 @@ write.addEventListener('focusout', function () {
       machine['table'][selectedLink.source['label']][boxContents[0]]['write'] = write.value;
       //we're finished here
       source.setValue(jsyaml.safeDump(machine));
-      util.setCookie('TMReload', 'transition write changed');
+      KeyValueStorage.write('TMReload', 'transition write changed');
     }
   }
 })
@@ -976,7 +977,7 @@ moveL.addEventListener('click', function () {
   delete machine['table'][selectedLink.source['label']][read.value]['R'];
   //we're finished here
   source.setValue(jsyaml.safeDump(machine));
-  util.setCookie('TMReload', 'head movement changed');
+  KeyValueStorage.write('TMReload', 'head movement changed');
 })
 
 moveR.addEventListener('click', function () {
@@ -996,7 +997,7 @@ moveR.addEventListener('click', function () {
   delete machine['table'][selectedLink.source['label']][read.value]['L'];
   //we're finished here
   source.setValue(jsyaml.safeDump(machine));
-  util.setCookie('TMReload', 'head movement changed');
+  KeyValueStorage.write('TMReload', 'head movement changed');
 })
 
 deleteLink.addEventListener('click', function (){
@@ -1008,7 +1009,7 @@ deleteLink.addEventListener('click', function (){
   //we're finished here
   source.setValue(jsyaml.safeDump(machine));
   disableEditing();
-  util.setCookie('TMReload', 'delete link');
+  KeyValueStorage.write('TMReload', 'delete link');
 })
 
 // Positioning

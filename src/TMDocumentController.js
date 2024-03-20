@@ -3,7 +3,8 @@ var TMSimulator = require('./TMSimulator'),
     parser = require('./parser'),
     util = require('./util'),
     ace = require('ace-builds/src-min-noconflict'),
-    d3 = require('d3');
+    d3 = require('d3'),
+    KeyValueStorage = require('./storage').KeyValueStorage;
 var TMSpecError = parser.TMSpecError;
 var YAMLException = parser.YAMLException;
 var UndoManager = ace.require('ace/undomanager').UndoManager;
@@ -51,16 +52,16 @@ function TMDocumentController(containers, buttons, document) {
   var editorButtons = buttons.editor;
   var self = this;
 
-  util.setCookie('TMReload', '');
+  KeyValueStorage.write('TMReload', '');
 
   window.setInterval(function () {
-    if (util.getCookie('TMReload')){
+    if (KeyValueStorage.read('TMReload')){
       self.loadEditorSource();
       // save whenever "Load" is pressed
       self.save();
       //self.reset();
       //self.editor.focus();
-      util.setCookie('TMReload', '');
+      KeyValueStorage.write('TMReload', '');
     }
   }, 50);
 
