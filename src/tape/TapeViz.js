@@ -5,6 +5,7 @@ require('./tape.css');
 var jsyaml = require('js-yaml');
 var ace = require('ace-builds/src-min-noconflict');
 const util = require('../util');
+var KeyValueStorage = require('../storage').KeyValueStorage;
 
 var nodeEditControls = window.document.getElementById('node-edit-controls');
 var transitionEditControls = window.document.getElementById('transition-edit-controls');
@@ -94,7 +95,6 @@ function TapeViz(svg, lookaround, blank, input) {
 
   //when the tape is clicked, show the edit controls
   svg.on('dblclick', function () {
-    console.log("tape doubleclicked");
     //disable all the form fields - messy...
     nodeLabel.disabled = true;
     nodeLabel.value = '';
@@ -145,7 +145,7 @@ function TapeViz(svg, lookaround, blank, input) {
       machine['blank'] = controlsBlank.value;
       //we're finished here
       source.setValue(jsyaml.safeDump(machine));
-      util.setCookie('TMReload', 'tape changed');
+      KeyValueStorage.write('TMReload', 'tape changed');
     })
   });
 }

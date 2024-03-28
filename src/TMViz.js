@@ -61,7 +61,13 @@ function addTape(div, spec) {
     .attr('style', 'display: none')
     .classed('edit-controls', true);
 
-  container.append('input')
+  var inputDiv = container.append('div')
+    .append('label')
+    .attr('for', 'tape-edit-input')
+    .attr('style', 'font-weight: bold')
+    .text('Input:');
+
+  inputDiv.append('input')
     .attr('id', 'tape-edit-input')
     .attr('type', 'text')
     .attr('style', 'width: 100px; text-align: center');
@@ -173,6 +179,7 @@ TMViz.prototype.reset = function () {
   this.machine.state = this.__spec.startState;
   this.machine.tape.domNode.remove();
   this.machine.tape = addTape(this.__parentDiv, this.__spec);
+  //TODO reset the machine log
 };
 
 Object.defineProperty(TMViz.prototype, 'positionTable', {

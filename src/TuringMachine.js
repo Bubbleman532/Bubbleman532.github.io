@@ -33,6 +33,7 @@ TuringMachine.prototype.step = function () {
   this.state = instruct.state;
 
   return true;
+  //TODO turingmachine step
 };
 
 Object.defineProperties(TuringMachine.prototype, {

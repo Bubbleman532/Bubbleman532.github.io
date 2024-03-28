@@ -121,6 +121,12 @@ integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7
     font-family: 'Source Code Pro', 'source-code-pro', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
     text-align: left;
   }
+  .tm-runlog{
+    border-radius: 4px;
+    margin-top: 1em;
+    border: 1px solid #DDD;
+    overflow-y: scroll
+  }
   /* Print styles */
   @media print {
     button.btn, hr { display: none }
@@ -553,7 +559,27 @@ aria-labelledby="importPanelHeader">
         Revert to diagram
       </button>
       <!--TODO implement the runlog-->
-      <div id="run-log">Run Log coming soon</div>
+      <div id="run-log" class="tm-runlog" style="overflow-y: scroll">
+        <table id="runLogTable" class="table">
+        <tbody>
+        <tr>
+          <td>
+            Step
+          </td>
+          <td>
+            Transition
+          </td>
+          <td>
+            Tape
+          </td>
+          <td>
+            New State
+          </td>
+        </tr>
+        </tbody>
+        </table>
+        <p>Run log coming soon</p>
+      </div>
       <div id="editor-container" class="tm-editor" hidden></div>
     </div>
     </div>
@@ -589,7 +615,8 @@ aria-labelledby="importPanelHeader">
     <p>There are over a dozen different example machines to explore.</p>
     <p>
       Most of the examples take input. Experiment with different inputs to see what happens!
-      Edit the code and click <em>Load machine</em> to sync your changes.
+      You can change the input by either double clicking the tape, or editing the code and
+      clicking <em>Load machine</em> to sync your changes.
     </p>
     <section>
       <h4>What’s going on?</h4>
@@ -759,20 +786,21 @@ aria-labelledby="importPanelHeader">
                 <tbody>
                   <tr>
                     <td>
-                      Doubleclick
+                      Double click
                     </td>
                     <td>
-                      Add a node
+                      <p>Canvas: Add a node</p>
+                      <p>Tape: Change the input/blank symbol</p>
                     </td>
                   </tr>
                 </tbody>
                 <tbody>
                   <tr>
                     <td>
-                      <kbd>Ctrl</kbd>+ Click and Drag
+                      <kbd>Ctrl</kbd> + Drag
                     </td>
                     <td>
-                      Add a transition
+                      Add a transition between two nodes
                     </td>
                   </tr>
                 </tbody>
@@ -782,7 +810,7 @@ aria-labelledby="importPanelHeader">
                       Click
                     </td>
                     <td>
-                      Selects node/transition<br> <small>or deselects if the canvas is clicked</small>
+                      Select node/transition<br> <small>or deselect if the canvas is clicked</small>
                     </td>
                   </tr>
                 </tbody>
@@ -807,9 +835,9 @@ aria-labelledby="importPanelHeader">
                 </tr>
                 </tbody>
               </table>
-              <p>Transitions have a default of reading '<code>*</code>' and moving '<code>L</code>'.
+              <p>Transitions have a default of reading '<code>?</code>' and moving '<code>L</code>'.
                 They must be <b>changed</b> before any more transitions are added from the <b>same node</b>.</p>
-              <p>The node/transition details will load into the forms above the machine.
+              <p>The <b>node/transition details</b> will load into the <b>forms above the machine</b>.
                 Any changes to these details will be reflected in the machine immediately,
                 or on clicking out of the text boxes.</p>
               <noscript>
