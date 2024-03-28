@@ -6,7 +6,7 @@ webpackJsonp_name_([1],[
   \******************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(/*! ./src/main.js */17);
+	__webpack_require__(/*! ./src/main.js */18);
 	(function webpackMissingModule() { throw new Error("Cannot find module \"D:\\bubbleman532.github.io\\build\""); }());
 
 
@@ -27,7 +27,8 @@ webpackJsonp_name_([1],[
 /* 14 */,
 /* 15 */,
 /* 16 */,
-/* 17 */
+/* 17 */,
+/* 18 */
 /*!*********************!*\
   !*** ./src/main.js ***!
   \*********************/
@@ -38,8 +39,8 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* eslint-env browser */
-	var TMDocumentController = __webpack_require__(/*! ./TMDocumentController */ 18),
-	    DocumentMenu = __webpack_require__(/*! ./DocumentMenu */ 20),
+	var TMDocumentController = __webpack_require__(/*! ./TMDocumentController */ 19),
+	    DocumentMenu = __webpack_require__(/*! ./DocumentMenu */ 21),
 	    examples = __webpack_require__(/*! ./examples */ 23),
 	    toDocFragment = __webpack_require__(/*! ./util */ 10).toDocFragment;
 	var ace = __webpack_require__(/*! ace-builds/src-min-noconflict */ 9);
@@ -67,7 +68,7 @@ webpackJsonp_name_([1],[
 	(function () {
 	  // Warn when falling back to RAM-only storage
 	  // NB. This mainly covers local storage errors and Safari's Private Browsing.
-	  if (!__webpack_require__(/*! ./storage */ 21).canUseLocalStorage) {
+	  if (!__webpack_require__(/*! ./storage */ 11).canUseLocalStorage) {
 	    addAlertPane('info', '<p>Local storage is unavailable. ' +
 	      'Your browser could be in Private Browsing mode, or it might not support <a href="http://caniuse.com/#feat=namevalue-storage" target="_blank">local storage</a>.</p>' +
 	      '<strong>Any changes will be lost after leaving the webpage.</strong>');
@@ -404,18 +405,19 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /*!*************************************!*\
   !*** ./src/TMDocumentController.js ***!
   \*************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var TMSimulator = __webpack_require__(/*! ./TMSimulator */ 19),
-	    parser = __webpack_require__(/*! ./parser */ 15),
+	var TMSimulator = __webpack_require__(/*! ./TMSimulator */ 20),
+	    parser = __webpack_require__(/*! ./parser */ 16),
 	    util = __webpack_require__(/*! ./util */ 10),
 	    ace = __webpack_require__(/*! ace-builds/src-min-noconflict */ 9),
-	    d3 = __webpack_require__(/*! d3 */ 6);
+	    d3 = __webpack_require__(/*! d3 */ 6),
+	    KeyValueStorage = __webpack_require__(/*! ./storage */ 11).KeyValueStorage;
 	var TMSpecError = parser.TMSpecError;
 	var YAMLException = parser.YAMLException;
 	var UndoManager = ace.require('ace/undomanager').UndoManager;
@@ -463,16 +465,16 @@ webpackJsonp_name_([1],[
 	  var editorButtons = buttons.editor;
 	  var self = this;
 	
-	  util.setCookie('TMReload', '');
+	  KeyValueStorage.write('TMReload', '');
 	
 	  window.setInterval(function () {
-	    if (util.getCookie('TMReload')){
+	    if (KeyValueStorage.read('TMReload')){
 	      self.loadEditorSource();
 	      // save whenever "Load" is pressed
 	      self.save();
 	      //self.reset();
 	      //self.editor.focus();
-	      util.setCookie('TMReload', '');
+	      KeyValueStorage.write('TMReload', '');
 	    }
 	  }, 50);
 	
@@ -782,7 +784,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /*!****************************!*\
   !*** ./src/TMSimulator.js ***!
   \****************************/
@@ -790,10 +792,10 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var parseSpec = __webpack_require__(/*! ./parser */ 15).parseSpec,
+	var parseSpec = __webpack_require__(/*! ./parser */ 16).parseSpec,
 	    TMViz = __webpack_require__(/*! ./TMViz */ 1),
-	    watchInit = __webpack_require__(/*! ./watch */ 16).watchInit,
-	    values = __webpack_require__(/*! lodash */ 12).values;
+	    watchInit = __webpack_require__(/*! ./watch */ 17).watchInit,
+	    values = __webpack_require__(/*! lodash */ 13).values;
 	
 	/**
 	 * Turing machine simulator component.
@@ -937,7 +939,7 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /*!*****************************!*\
   !*** ./src/DocumentMenu.js ***!
   \*****************************/
@@ -946,7 +948,7 @@ webpackJsonp_name_([1],[
 	'use strict';
 	
 	/* global document */
-	var KeyValueStorage = __webpack_require__(/*! ./storage */ 21).KeyValueStorage;
+	var KeyValueStorage = __webpack_require__(/*! ./storage */ 11).KeyValueStorage;
 	var TMDocument = __webpack_require__(/*! ./TMDocument */ 22);
 	var d3 = __webpack_require__(/*! d3 */ 6);
 	var defaults = __webpack_require__(/*! lodash/fp */ 5).defaults; // NB. 2nd arg takes precedence
@@ -1240,83 +1242,6 @@ webpackJsonp_name_([1],[
 
 
 /***/ }),
-/* 21 */
-/*!************************!*\
-  !*** ./src/storage.js ***!
-  \************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var isBrowserIEorEdge = __webpack_require__(/*! ./util */ 10).isBrowserIEorEdge;
-	/* global localStorage:false, window:false */
-	
-	///////////////////////
-	// Key-Value Storage //
-	///////////////////////
-	
-	var canUseLocalStorage = (function () {
-	  // from modernizr v3.3.1 (modernizr.com)
-	  var mod = 'modernizr';
-	  try {
-	    localStorage.setItem(mod, mod);
-	    localStorage.removeItem(mod);
-	    return true;
-	  } catch (e) {
-	    return false;
-	  }
-	})();
-	
-	// RAM-only fallback
-	var RAMStorage = (function () {
-	  var obj = {};
-	  return Object.freeze({
-	    get length() { return Object.keys(obj).length; },
-	    key: function (n) { return (n in Object.keys(obj)) ? Object.keys(obj)[n] : null; },
-	    getItem: function (key) { return {}.hasOwnProperty.call(obj, key) ? obj[key] : null; },
-	    setItem: function (key, val) { obj[key] = String(val); },
-	    removeItem: function (key) { delete obj[key]; },
-	    clear: function () { obj = {}; }
-	  });
-	})();
-	
-	var KeyValueStorage = (function () {
-	  var s = canUseLocalStorage ? localStorage : RAMStorage;
-	
-	  // workaround IE/Edge firing events on its own window
-	  var fromOwnWindow = isBrowserIEorEdge
-	    ? function () { return window.document.hasFocus(); }
-	    : function () { return false; };
-	
-	  return {
-	    read  : s.getItem.bind(s),
-	    write : s.setItem.bind(s),
-	    remove: s.removeItem.bind(s),
-	    // Registers a listener for StorageEvents from other tabs/windows.
-	    addStorageListener: canUseLocalStorage
-	      ? function (listener) {
-	        window.addEventListener('storage', function (e) {
-	          if (fromOwnWindow()) {
-	            return;
-	          }
-	          if (e.storageArea === localStorage) {
-	            listener(e);
-	          }
-	        });
-	      }
-	      : function () {},
-	    removeStorageListener: canUseLocalStorage
-	      ? window.removeEventListener.bind(window, 'storage')
-	      : function () {}
-	  };
-	})();
-	
-	
-	exports.canUseLocalStorage = canUseLocalStorage;
-	exports.KeyValueStorage = KeyValueStorage;
-
-
-/***/ }),
 /* 22 */
 /*!***************************!*\
   !*** ./src/TMDocument.js ***!
@@ -1325,7 +1250,7 @@ webpackJsonp_name_([1],[
 
 	'use strict';
 	
-	var KeyValueStorage = __webpack_require__(/*! ./storage */ 21).KeyValueStorage,
+	var KeyValueStorage = __webpack_require__(/*! ./storage */ 11).KeyValueStorage,
 	    examples = __webpack_require__(/*! ./examples */ 23),
 	    util = __webpack_require__(/*! ./util */ 10),
 	    _ = __webpack_require__(/*! lodash/fp */ 5);
