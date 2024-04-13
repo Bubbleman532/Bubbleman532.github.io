@@ -7,7 +7,7 @@ webpackJsonp_name_([1],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(/*! ./src/main.js */18);
-	(function webpackMissingModule() { throw new Error("Cannot find module \"D:\\bubbleman532.github.io\\build\""); }());
+	(function webpackMissingModule() { throw new Error("Cannot find module \"D:\\dfw056\\build\""); }());
 
 
 /***/ }),
@@ -499,6 +499,11 @@ webpackJsonp_name_([1],[
 	      });
 	  editorButtons.load
 	      .addEventListener('click', function () {
+	        //foolproof by blanking edit boxes
+	        window.document.getElementById('nodeLabel').value = '';
+	        window.document.getElementById('read').value = '';
+	        window.document.getElementById('write').value = '';
+	        //continue with loading
 	        self.loadEditorSource();
 	        // save whenever "Load" is pressed
 	        self.save();

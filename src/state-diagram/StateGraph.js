@@ -50,14 +50,17 @@ function deriveGraph(table) {
 
       // Combine edges with the same source and target
       var cache = {};
-      function edgeTo(target, label) {
+      function edgeTo(target, label, symbols) {
         var edge = cache[target] ||
           _.tap(cache[target] = {
             source: vertex,
             target: graph[target],
-            labels: []
+            labels: [],
+            labelsForSymbol: {}
           }, allEdges.push.bind(allEdges));
         edge.labels.push(label);
+        for (var i = 0; i < symbols.length; i++)
+          edge.labelsForSymbol[symbols[i]] = label;
         return edge;
       }
       // Create symbol -> instruction object map
@@ -73,7 +76,7 @@ function deriveGraph(table) {
           return acc;
         }, []);
         var target = instruct.state != null ? instruct.state : state;
-        var edge = edgeTo(target, labelFor(symbols, instruct));
+        var edge = edgeTo(target, labelFor(symbols, instruct), symbols);
 
         symbols.forEach(function (symbol) {
           stateTransitions[symbol] = {

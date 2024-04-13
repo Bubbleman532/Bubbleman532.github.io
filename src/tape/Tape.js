@@ -17,7 +17,7 @@ function Tape(blank, input) {
     before: [],
     after: (input == null || input.length == 0) ? [blank] : input.slice().reverse(),
     toString: function () {
-      return this.before.join('') + '🔎' + this.after.slice().reverse().join('');
+      return this.before.join(' ') + ' [' + this.after.slice(-1) + '] ' + this.after.slice().reverse().slice(1).join(' ');
     }
   };
 }

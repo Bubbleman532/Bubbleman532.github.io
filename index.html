@@ -5,11 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="description" content="Visualize and simulate Turing machines as animated state diagrams.
-Create and share your own machines using a simple format. Examples and exercises are included.">
+<meta name="description" content="Create, edit and simulate Turing machines as animated state diagrams.">
 <meta name="keywords" content="Turing machine, finite automata, simulator, visualization, state diagram">
 <meta name="robots" content="NOODP">
-<title>Turing machine visualization</title>
+<title>Turing Machine Sandbox</title>
 
 <!-- Bootstrap -->
 <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" rel="stylesheet"
@@ -224,7 +223,7 @@ integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7
   <div class="container-fluid">
     <div class="navbar-header">
       <span class="navbar-brand">
-        <span class="kern">T</span>uring <span class="kern-Ma">M</span>achine <span class="kern-Vi">V</span>isualization
+        <span class="kern">T</span>uring <span class="kern-Ma">M</span>achine <span class="kern-Vi">S</span>andbox
       </span>
     </div>
 
@@ -558,27 +557,9 @@ aria-labelledby="importPanelHeader">
       <button type="button" class="btn btn-default tm-editor-revert" id="editor-revert" disabled>
         Revert to diagram
       </button>
-      <!--TODO implement the runlog-->
-      <div id="run-log" class="tm-runlog" style="overflow-y: scroll">
+      <div id="run-log" class="tm-runlog" style="overflow-y: scroll; max-height: 700px">
         <table id="runLogTable" class="table">
-        <tbody>
-        <tr>
-          <td>
-            Step
-          </td>
-          <td>
-            Transition
-          </td>
-          <td>
-            Tape
-          </td>
-          <td>
-            New State
-          </td>
-        </tr>
-        </tbody>
         </table>
-        <p>Run log coming soon</p>
       </div>
       <div id="editor-container" class="tm-editor" hidden></div>
     </div>
@@ -835,8 +816,8 @@ aria-labelledby="importPanelHeader">
                 </tr>
                 </tbody>
               </table>
-              <p>Transitions have a default of reading '<code>?</code>' and moving '<code>L</code>'.
-                They must be <b>changed</b> before any more transitions are added from the <b>same node</b>.</p>
+              <p>Transitions have a default of reading '<code>?</code>' and moving '<code>R</code>'.
+                <b>They must be changed</b> before any more transitions are added from the <b>same node</b>.</p>
               <p>The <b>node/transition details</b> will load into the <b>forms above the machine</b>.
                 Any changes to these details will be reflected in the machine immediately,
                 or on clicking out of the text boxes.</p>

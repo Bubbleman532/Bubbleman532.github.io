@@ -24,17 +24,20 @@ TuringMachine.prototype.toString = function () {
  * @return {boolean} true if successful (the transition is defined),
  *   false otherwise (machine halted)
  */
-TuringMachine.prototype.step = function () {
+TuringMachine.prototype.extendedStep = function () {
   var instruct = this.nextInstruction;
-  if (instruct == null) { return false; }
+  if (instruct == null) { return null; }
 
   this.tape.write(instruct.symbol);
   move(this.tape, instruct.move);
   this.state = instruct.state;
 
-  return true;
-  //TODO turingmachine step
+  return instruct;
 };
+
+TuringMachine.prototype.step = function () {
+  return this.extendedStep() !== null;
+}
 
 Object.defineProperties(TuringMachine.prototype, {
   nextInstruction: {

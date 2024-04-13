@@ -10,11 +10,11 @@
  */
 
 var TuringMachine = require('./TuringMachine').TuringMachine,
-    TapeViz = require('./tape/TapeViz'),
-    StateGraph = require('./state-diagram/StateGraph'),
-    StateViz = require('./state-diagram/StateViz'),
-    watchInit = require('./watch').watchInit,
-    d3 = require('d3');
+  TapeViz = require('./tape/TapeViz'),
+  StateGraph = require('./state-diagram/StateGraph'),
+  StateViz = require('./state-diagram/StateViz'),
+  watchInit = require('./watch').watchInit,
+  d3 = require('d3');
 
 /**
  * Create an animated transition function.
@@ -25,7 +25,9 @@ var TuringMachine = require('./TuringMachine').TuringMachine,
 function animatedTransition(graph, animationCallback) {
   return function (state, symbol) {
     var tuple = graph.getInstructionAndEdge(state, symbol);
-    if (tuple == null) { return null; }
+    if (tuple == null) {
+      return null;
+    }
 
     animationCallback(tuple.edge);
     return tuple.instruction;
@@ -40,18 +42,18 @@ function animatedTransition(graph, animationCallback) {
 function pulseEdge(edge) {
   var edgepath = d3.select(edge.domNode);
   return edgepath
-      .classed('active-edge', true)
+    .classed('active-edge', true)
     .transition()
-      .style('stroke-width', '3px')
+    .style('stroke-width', '3px')
     .transition()
-      .style('stroke-width', '1px')
+    .style('stroke-width', '1px')
     .transition()
-      .duration(0)
-      .each('start', /* @this edge */ function () {
-        d3.select(this).classed('active-edge', false);
-      })
-      .style('stroke', null)
-      .style('stroke-width', null);
+    .duration(0)
+    .each('start', /* @this edge */ function () {
+      d3.select(this).classed('active-edge', false);
+    })
+    .style('stroke', null)
+    .style('stroke-width', null);
 }
 
 function addTape(div, spec) {
@@ -108,19 +110,24 @@ function TMViz(div, spec, posTable) {
     graph.getVertexMap(),
     graph.getEdges()
   );
-  if (posTable != undefined) { this.positionTable = posTable; }
+  if (posTable != undefined) {
+    this.positionTable = posTable;
+  }
 
   this.edgeAnimation = pulseEdge;
   this.stepInterval = 100;
 
   var self = this;
+
   // We hook into the animation callback to know when to start the next step (when running).
   function animateAndContinue(edge) {
     var transition = self.edgeAnimation(edge);
     if (self.isRunning) {
       transition.transition().duration(self.stepInterval).each('end', function () {
         // stop if machine was paused during the animation
-        if (self.isRunning) { self.step(); }
+        if (self.isRunning) {
+          self.step();
+        }
       });
     }
   }
@@ -147,44 +154,95 @@ function TMViz(div, spec, posTable) {
    */
   Object.defineProperty(this, 'isRunning', {
     configurable: true,
-    get: function () { return isRunning; },
+    get: function () {
+      return isRunning;
+    },
     set: function (value) {
       if (isRunning !== value) {
         isRunning = value;
-        if (isRunning) { this.step(); }
+        if (isRunning) {
+          this.step();
+        }
       }
     }
   });
 
+  this.resetRunLog();
+
   this.__parentDiv = div;
   this.__spec = spec;
+  this.__graph = graph;
+  this.__step = 1;
+}
+
+TMViz.prototype.resetRunLog = function () {
+    var runLogTable = d3.select("#runLogTable");
+    runLogTable.selectAll("tbody").remove();
+    var newRow = runLogTable.append("tbody").append("tr");
+    newRow.append("td").text("Step");
+    newRow.append("td").text("Transition");
+    newRow.append("td").text("Tape");
+    newRow.append("td").text("New State");
+
+    var secondRow = runLogTable.append("tbody").append("tr");
+    secondRow.append("td").text("");
+    secondRow.append("td").text("");
+    secondRow.append("td").text(this.machine.tape.toString());
+    secondRow.append("td").text(this.machine.state);
 }
 
 /**
  * Step the machine immediately and interrupt any animations.
  */
 TMViz.prototype.step = function () {
-  if (!this.machine.step()) {
+  var prevState = this.machine.state;
+  var prevSymbol = this.machine.tape.read();
+  var a = this.machine.extendedStep();
+
+  if (a === null) {
     this.isRunning = false;
     this.isHalted = true;
+    return;
   }
+
+  var vertex = this.__graph.getVertex(prevState);
+  var transitions = vertex.transitions;
+  var transition = transitions[prevSymbol];
+  var edge = transition.edge;
+  var label = edge.labelsForSymbol[prevSymbol];
+  // if (label !== undefined) {
+  //   console.log(label);
+  // }
+  var runLogTable = d3.select("#runLogTable");
+  var newRow = runLogTable.append("tbody").append("tr");
+  newRow.append("td").text(this.__step);
+  newRow.append("td").text(label);
+  newRow.append("td").text(this.machine.tape.toString());
+  newRow.append("td").text(this.machine.state);
+  this.__step++;
 };
 
 /**
  * Reset the Turing machine to its starting configuration.
  */
+
 TMViz.prototype.reset = function () {
   this.isRunning = false;
   this.isHalted = false;
   this.machine.state = this.__spec.startState;
   this.machine.tape.domNode.remove();
   this.machine.tape = addTape(this.__parentDiv, this.__spec);
-  //TODO reset the machine log
+  this.resetRunLog();
+  this.__step = 1;
 };
 
 Object.defineProperty(TMViz.prototype, 'positionTable', {
-  get: function ()  { return this.stateviz.positionTable; },
-  set: function (posTable) { this.stateviz.positionTable = posTable; }
+  get: function () {
+    return this.stateviz.positionTable;
+  },
+  set: function (posTable) {
+    this.stateviz.positionTable = posTable;
+  }
 });
 
 module.exports = TMViz;

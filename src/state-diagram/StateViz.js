@@ -6,7 +6,7 @@ var isBrowserIEorEdge = require('../util').isBrowserIEorEdge;
 var d3 = require('d3');
 var jsyaml = require('js-yaml');
 var ace = require('ace-builds/src-min-noconflict');
-var _ = require('lodash/fp');https://bubbleman532.github.io/
+var _ = require('lodash/fp');
 var assign = require('lodash').assign; // need mutable assign()
 var KeyValueStorage = require('../storage').KeyValueStorage;
 
@@ -606,10 +606,15 @@ function StateViz(container, nodes, linkArray) {
       if (lastKeyDown === 17) {
         // add link to graph (update if exists)
         var machine = jsyaml.safeLoad(source.getValue());
-        machine.table[mousedownNode.label]['?'] = {L: mouseupNode.label};
-        source.setValue(jsyaml.safeDump(machine));
-        KeyValueStorage.write('TMReload', 'new link');
-        disableEditing();
+        // throw error if default transition already exists
+        if (machine.table[mousedownNode.label].hasOwnProperty('?')) {
+          throwMachineError("Edit the last transition before adding a new one (each symbol can only appear on one transition at a time)");
+        } else {
+          machine.table[mousedownNode.label]['?'] = {R: mouseupNode.label};
+          source.setValue(jsyaml.safeDump(machine));
+          KeyValueStorage.write('TMReload', 'new link');
+          disableEditing();
+        }
       }
 
       force.resume();
@@ -821,11 +826,11 @@ function StateViz(container, nodes, linkArray) {
               //delete every transition with the same name as the node being deleted
               delete machine.table[selectedNode['label']];
               for (var node in machine.table) {
-                for (var read in machine.table[node]) {
-                  for (var i in machine.table[node][read]) {
+                for (var r in machine.table[node]) {
+                  for (var i in machine.table[node][r]) {
                     if (i === "L" | i === "R") {
-                      if (machine.table[node][read][i] === selectedNode['label'])
-                        delete machine.table[node][read];
+                      if (machine.table[node][r][i] === selectedNode['label'])
+                        delete machine.table[node][r];
                     }
                   }
                 }

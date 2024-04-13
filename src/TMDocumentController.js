@@ -86,6 +86,11 @@ function TMDocumentController(containers, buttons, document) {
       });
   editorButtons.load
       .addEventListener('click', function () {
+        //foolproof by blanking edit boxes
+        window.document.getElementById('nodeLabel').value = '';
+        window.document.getElementById('read').value = '';
+        window.document.getElementById('write').value = '';
+        //continue with loading
         self.loadEditorSource();
         // save whenever "Load" is pressed
         self.save();

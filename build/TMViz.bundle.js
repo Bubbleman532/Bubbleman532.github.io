@@ -126,11 +126,11 @@ var TMViz =
 	 */
 	
 	var TuringMachine = __webpack_require__(/*! ./TuringMachine */ 2).TuringMachine,
-	    TapeViz = __webpack_require__(/*! ./tape/TapeViz */ 3),
-	    StateGraph = __webpack_require__(/*! ./state-diagram/StateGraph */ 12),
-	    StateViz = __webpack_require__(/*! ./state-diagram/StateViz */ 14),
-	    watchInit = __webpack_require__(/*! ./watch */ 17).watchInit,
-	    d3 = __webpack_require__(/*! d3 */ 6);
+	  TapeViz = __webpack_require__(/*! ./tape/TapeViz */ 3),
+	  StateGraph = __webpack_require__(/*! ./state-diagram/StateGraph */ 12),
+	  StateViz = __webpack_require__(/*! ./state-diagram/StateViz */ 14),
+	  watchInit = __webpack_require__(/*! ./watch */ 17).watchInit,
+	  d3 = __webpack_require__(/*! d3 */ 6);
 	
 	/**
 	 * Create an animated transition function.
@@ -141,7 +141,9 @@ var TMViz =
 	function animatedTransition(graph, animationCallback) {
 	  return function (state, symbol) {
 	    var tuple = graph.getInstructionAndEdge(state, symbol);
-	    if (tuple == null) { return null; }
+	    if (tuple == null) {
+	      return null;
+	    }
 	
 	    animationCallback(tuple.edge);
 	    return tuple.instruction;
@@ -156,18 +158,18 @@ var TMViz =
 	function pulseEdge(edge) {
 	  var edgepath = d3.select(edge.domNode);
 	  return edgepath
-	      .classed('active-edge', true)
+	    .classed('active-edge', true)
 	    .transition()
-	      .style('stroke-width', '3px')
+	    .style('stroke-width', '3px')
 	    .transition()
-	      .style('stroke-width', '1px')
+	    .style('stroke-width', '1px')
 	    .transition()
-	      .duration(0)
-	      .each('start', /* @this edge */ function () {
-	        d3.select(this).classed('active-edge', false);
-	      })
-	      .style('stroke', null)
-	      .style('stroke-width', null);
+	    .duration(0)
+	    .each('start', /* @this edge */ function () {
+	      d3.select(this).classed('active-edge', false);
+	    })
+	    .style('stroke', null)
+	    .style('stroke-width', null);
 	}
 	
 	function addTape(div, spec) {
@@ -224,19 +226,24 @@ var TMViz =
 	    graph.getVertexMap(),
 	    graph.getEdges()
 	  );
-	  if (posTable != undefined) { this.positionTable = posTable; }
+	  if (posTable != undefined) {
+	    this.positionTable = posTable;
+	  }
 	
 	  this.edgeAnimation = pulseEdge;
 	  this.stepInterval = 100;
 	
 	  var self = this;
+	
 	  // We hook into the animation callback to know when to start the next step (when running).
 	  function animateAndContinue(edge) {
 	    var transition = self.edgeAnimation(edge);
 	    if (self.isRunning) {
 	      transition.transition().duration(self.stepInterval).each('end', function () {
 	        // stop if machine was paused during the animation
-	        if (self.isRunning) { self.step(); }
+	        if (self.isRunning) {
+	          self.step();
+	        }
 	      });
 	    }
 	  }
@@ -263,44 +270,95 @@ var TMViz =
 	   */
 	  Object.defineProperty(this, 'isRunning', {
 	    configurable: true,
-	    get: function () { return isRunning; },
+	    get: function () {
+	      return isRunning;
+	    },
 	    set: function (value) {
 	      if (isRunning !== value) {
 	        isRunning = value;
-	        if (isRunning) { this.step(); }
+	        if (isRunning) {
+	          this.step();
+	        }
 	      }
 	    }
 	  });
 	
+	  this.resetRunLog();
+	
 	  this.__parentDiv = div;
 	  this.__spec = spec;
+	  this.__graph = graph;
+	  this.__step = 1;
+	}
+	
+	TMViz.prototype.resetRunLog = function () {
+	    var runLogTable = d3.select("#runLogTable");
+	    runLogTable.selectAll("tbody").remove();
+	    var newRow = runLogTable.append("tbody").append("tr");
+	    newRow.append("td").text("Step");
+	    newRow.append("td").text("Transition");
+	    newRow.append("td").text("Tape");
+	    newRow.append("td").text("New State");
+	
+	    var secondRow = runLogTable.append("tbody").append("tr");
+	    secondRow.append("td").text("");
+	    secondRow.append("td").text("");
+	    secondRow.append("td").text(this.machine.tape.toString());
+	    secondRow.append("td").text(this.machine.state);
 	}
 	
 	/**
 	 * Step the machine immediately and interrupt any animations.
 	 */
 	TMViz.prototype.step = function () {
-	  if (!this.machine.step()) {
+	  var prevState = this.machine.state;
+	  var prevSymbol = this.machine.tape.read();
+	  var a = this.machine.extendedStep();
+	
+	  if (a === null) {
 	    this.isRunning = false;
 	    this.isHalted = true;
+	    return;
 	  }
+	
+	  var vertex = this.__graph.getVertex(prevState);
+	  var transitions = vertex.transitions;
+	  var transition = transitions[prevSymbol];
+	  var edge = transition.edge;
+	  var label = edge.labelsForSymbol[prevSymbol];
+	  // if (label !== undefined) {
+	  //   console.log(label);
+	  // }
+	  var runLogTable = d3.select("#runLogTable");
+	  var newRow = runLogTable.append("tbody").append("tr");
+	  newRow.append("td").text(this.__step);
+	  newRow.append("td").text(label);
+	  newRow.append("td").text(this.machine.tape.toString());
+	  newRow.append("td").text(this.machine.state);
+	  this.__step++;
 	};
 	
 	/**
 	 * Reset the Turing machine to its starting configuration.
 	 */
+	
 	TMViz.prototype.reset = function () {
 	  this.isRunning = false;
 	  this.isHalted = false;
 	  this.machine.state = this.__spec.startState;
 	  this.machine.tape.domNode.remove();
 	  this.machine.tape = addTape(this.__parentDiv, this.__spec);
-	  //TODO reset the machine log
+	  this.resetRunLog();
+	  this.__step = 1;
 	};
 	
 	Object.defineProperty(TMViz.prototype, 'positionTable', {
-	  get: function ()  { return this.stateviz.positionTable; },
-	  set: function (posTable) { this.stateviz.positionTable = posTable; }
+	  get: function () {
+	    return this.stateviz.positionTable;
+	  },
+	  set: function (posTable) {
+	    this.stateviz.positionTable = posTable;
+	  }
 	});
 	
 	module.exports = TMViz;
@@ -339,17 +397,20 @@ var TMViz =
 	 * @return {boolean} true if successful (the transition is defined),
 	 *   false otherwise (machine halted)
 	 */
-	TuringMachine.prototype.step = function () {
+	TuringMachine.prototype.extendedStep = function () {
 	  var instruct = this.nextInstruction;
-	  if (instruct == null) { return false; }
+	  if (instruct == null) { return null; }
 	
 	  this.tape.write(instruct.symbol);
 	  move(this.tape, instruct.move);
 	  this.state = instruct.state;
 	
-	  return true;
-	  //TODO turingmachine step
+	  return instruct;
 	};
+	
+	TuringMachine.prototype.step = function () {
+	  return this.extendedStep() !== null;
+	}
 	
 	Object.defineProperties(TuringMachine.prototype, {
 	  nextInstruction: {
@@ -642,7 +703,7 @@ var TMViz =
 	    before: [],
 	    after: (input == null || input.length == 0) ? [blank] : input.slice().reverse(),
 	    toString: function () {
-	      return this.before.join('') + '🔎' + this.after.slice().reverse().join('');
+	      return this.before.join(' ') + ' [' + this.after.slice(-1) + '] ' + this.after.slice().reverse().slice(1).join(' ');
 	    }
 	  };
 	}
@@ -965,14 +1026,17 @@ var TMViz =
 	
 	      // Combine edges with the same source and target
 	      var cache = {};
-	      function edgeTo(target, label) {
+	      function edgeTo(target, label, symbols) {
 	        var edge = cache[target] ||
 	          _.tap(cache[target] = {
 	            source: vertex,
 	            target: graph[target],
-	            labels: []
+	            labels: [],
+	            labelsForSymbol: {}
 	          }, allEdges.push.bind(allEdges));
 	        edge.labels.push(label);
+	        for (var i = 0; i < symbols.length; i++)
+	          edge.labelsForSymbol[symbols[i]] = label;
 	        return edge;
 	      }
 	      // Create symbol -> instruction object map
@@ -988,7 +1052,7 @@ var TMViz =
 	          return acc;
 	        }, []);
 	        var target = instruct.state != null ? instruct.state : state;
-	        var edge = edgeTo(target, labelFor(symbols, instruct));
+	        var edge = edgeTo(target, labelFor(symbols, instruct), symbols);
 	
 	        symbols.forEach(function (symbol) {
 	          stateTransitions[symbol] = {
@@ -1106,7 +1170,7 @@ var TMViz =
 	var d3 = __webpack_require__(/*! d3 */ 6);
 	var jsyaml = __webpack_require__(/*! js-yaml */ 8);
 	var ace = __webpack_require__(/*! ace-builds/src-min-noconflict */ 9);
-	var _ = __webpack_require__(/*! lodash/fp */ 5);https://bubbleman532.github.io/
+	var _ = __webpack_require__(/*! lodash/fp */ 5);
 	var assign = __webpack_require__(/*! lodash */ 13).assign; // need mutable assign()
 	var KeyValueStorage = __webpack_require__(/*! ../storage */ 11).KeyValueStorage;
 	
@@ -1706,10 +1770,15 @@ var TMViz =
 	      if (lastKeyDown === 17) {
 	        // add link to graph (update if exists)
 	        var machine = jsyaml.safeLoad(source.getValue());
-	        machine.table[mousedownNode.label]['?'] = {L: mouseupNode.label};
-	        source.setValue(jsyaml.safeDump(machine));
-	        KeyValueStorage.write('TMReload', 'new link');
-	        disableEditing();
+	        // throw error if default transition already exists
+	        if (machine.table[mousedownNode.label].hasOwnProperty('?')) {
+	          throwMachineError("Edit the last transition before adding a new one (each symbol can only appear on one transition at a time)");
+	        } else {
+	          machine.table[mousedownNode.label]['?'] = {R: mouseupNode.label};
+	          source.setValue(jsyaml.safeDump(machine));
+	          KeyValueStorage.write('TMReload', 'new link');
+	          disableEditing();
+	        }
 	      }
 	
 	      force.resume();
@@ -1921,11 +1990,11 @@ var TMViz =
 	              //delete every transition with the same name as the node being deleted
 	              delete machine.table[selectedNode['label']];
 	              for (var node in machine.table) {
-	                for (var read in machine.table[node]) {
-	                  for (var i in machine.table[node][read]) {
+	                for (var r in machine.table[node]) {
+	                  for (var i in machine.table[node][r]) {
 	                    if (i === "L" | i === "R") {
-	                      if (machine.table[node][read][i] === selectedNode['label'])
-	                        delete machine.table[node][read];
+	                      if (machine.table[node][r][i] === selectedNode['label'])
+	                        delete machine.table[node][r];
 	                    }
 	                  }
 	                }
