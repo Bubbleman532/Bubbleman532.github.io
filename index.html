@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="WhatTheHaidle — a tiny image guessing game." />
+    <title>WhatTheHaidle</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="site-header">
+        <a class="brand" href="/" aria-label="Start a new WhatTheHaidle game"><span>WhatTheHai</span>dle</a>
+        <p>What are you looking at?</p>
+      </header>
+
+      <section class="game-card" aria-labelledby="game-title">
+        <div class="heading-row">
+          <div>
+            <h1 id="game-title">Who is this?</h1>
+          </div>
+          <div class="guess-count" aria-label="Six guesses available">
+            <span id="attempt-number">1</span><small>/ 6</small>
+          </div>
+        </div>
+
+        <div class="image-frame" id="image-frame" aria-live="polite" aria-label="A heavily zoomed-in mystery image">
+          <img id="mystery-image" alt="Mystery image, progressively revealed with each guess" />
+          <div class="image-vignette"></div>
+          <p class="reveal-label" id="reveal-label">Reveal 1 of 6</p>
+        </div>
+
+        <div class="progress" aria-label="Image reveal progress">
+          <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+
+        <form id="guess-form" class="guess-form" autocomplete="off">
+          <label for="guess-input">Your guess</label>
+          <div class="input-row">
+            <input id="guess-input" name="guess" placeholder="" maxlength="60" required />
+            <button type="submit">Guess <span>↵</span></button>
+          </div>
+        </form>
+
+        <p id="message" class="message" role="status"></p>
+        <div id="guess-list" class="guess-list" aria-label="Your guesses"></div>
+
+      </section>
+
+      <footer>© BLEM Amusements inc.</footer>
+    </main>
+
+    <dialog id="share-dialog" class="share-dialog" aria-labelledby="share-title">
+      <form method="dialog" class="share-card">
+        <button class="close-dialog" value="close" aria-label="Close results">×</button>
+        <p class="eyebrow">Daily result</p>
+        <h2 id="share-title">Today’s Haidle</h2>
+        <p id="share-summary" class="share-summary"></p>
+        <pre id="share-grid" class="share-grid" aria-label="Your puzzle result"></pre>
+        <button id="share-button" class="share-button" type="button">Share result <span>↗</span></button>
+        <p id="copy-note" class="copy-note" aria-live="polite"></p>
+      </form>
+    </dialog>
+    <script src="app.js"></script>
+  </body>
+</html>
