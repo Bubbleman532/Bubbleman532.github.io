@@ -1,9 +1,3 @@
-const puzzles = [
-  { image: "images/day1.jpg" },
-  { image: "images/day2.jpg" },
-  { image: "images/day3.jpg" }
-];
-
 // These answers are the same for every daily image.
 const correctAnswers = ["Hai", "WhatTheHai", "Hai Goodbye", "Hai Ghudbye", "WhatTheHaiTV", "SDVX", "HaiGoodbye", "HaiGhudbye"];
 
@@ -31,10 +25,11 @@ function dailyPuzzleIndex() {
   const todayAtMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
   const daysSinceFirstGame = Math.max(0, Math.floor((todayAtMidnight - firstGameDate) / millisecondsPerDay));
-  return daysSinceFirstGame % puzzles.length;
+  return daysSinceFirstGame + 1;
 }
 
-const puzzleIndex = dailyPuzzleIndex();
+const puzzle = { image: `images/day${dailyPuzzleIndex()}.jpg` };
+
 let guesses = 0;
 let finished = false;
 let resultTiles = [];
@@ -44,7 +39,6 @@ function normalise(value) {
 }
 
 function loadPuzzle() {
-  const puzzle = puzzles[puzzleIndex];
   guesses = 0;
   finished = false;
   resultTiles = [];
@@ -128,7 +122,7 @@ form.addEventListener("submit", (event) => {
 shareButton.addEventListener("click", async () => {
   let text = resultText();
   try {
-    await navigator.clipboard.writeText(text + "\nwhatthehaidle.com");
+    await navigator.clipboard.writeText(text + "\nhttps://whatthehaidle.com");
     copyNote.textContent = "Result copied to your clipboard.";
   } catch (err) {
     copyNote.textContent = "Failed to copy: ", err;
