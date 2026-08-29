@@ -77,7 +77,7 @@ function resultText() {
     if (index >= resultTiles.length) return "⬛";
     return resultTiles[index] ? "🟩" : "⬜";
   });
-  return `WhatTheHaidle - ${dateLabel()}\n${tiles.join("")}`;
+  return `WhatTheHaidle ${dailyPuzzleIndex()}\n${tiles.join("")}`;
 }
 
 function openShareDialog(won) {
