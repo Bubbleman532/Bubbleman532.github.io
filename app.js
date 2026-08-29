@@ -5,7 +5,7 @@ const puzzles = [
 ];
 
 // These answers are the same for every daily image.
-const correctAnswers = ["Hai", "WhatTheHai", "Hai Goodbye", "Hai Ghudbye", "WhatTheHaiTV", "SDVX"];
+const correctAnswers = ["Hai", "WhatTheHai", "Hai Goodbye", "Hai Ghudbye", "WhatTheHaiTV", "SDVX", "HaiGoodbye", "HaiGhudbye"];
 
 // The first WhatTheHaidle puzzle is 29 August 2026. The same date always
 // selects the same image, while a new date selects the next one.
@@ -128,10 +128,10 @@ form.addEventListener("submit", (event) => {
 shareButton.addEventListener("click", async () => {
   let text = resultText();
   try {
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(text + "\nwhatthehaidle.com");
     copyNote.textContent = "Result copied to your clipboard.";
-  } catch (error) {
-    copyNote.textContent = "Failed to copy: ", error;
+  } catch (err) {
+    copyNote.textContent = "Failed to copy: ", err;
   }
 });
 
