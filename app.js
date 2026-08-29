@@ -126,12 +126,12 @@ form.addEventListener("submit", (event) => {
 });
 
 shareButton.addEventListener("click", async () => {
-  var text = resultText();
+  let text = resultText();
   try {
     await navigator.clipboard.writeText(text);
     copyNote.textContent = "Result copied to your clipboard.";
   } catch (error) {
-    copyNote.textContent = "Couldn’t copy just now, please try again.";
+    copyNote.textContent = "Failed to copy: ", error;
   }
 });
 
