@@ -74,7 +74,7 @@ function dateLabel() {
 
 function resultText() {
   const tiles = Array.from({ length: 6 }, (_, index) => {
-    if (index >= resultTiles.length) return "⬛";
+    if (index >= resultTiles.length) return "⬜";
     return resultTiles[index] ? "🟩" : "🟥";
   });
   return `WhatTheHaidle - ${dateLabel()}\n${tiles.join("")}`;
