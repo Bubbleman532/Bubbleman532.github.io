@@ -1,5 +1,5 @@
 // These answers are the same for every daily image.
-const correctAnswers = ["Hai", "WhatTheHai", "Hai Goodbye", "Hai Ghudbye", "WhatTheHaiTV", "SDVX", "HaiGoodbye", "HaiGhudbye"];
+const correctAnswers = ["Hai", "WhatTheHai", "Hai Goodbye", "Hai Ghudbye", "WhatTheHaiTV", "SDVX", "HaiGoodbye", "HaiGhudbye", "HaiGhudbai", "Hai Ghudbai", "jackylam", "jackylam5"];
 
 // The first WhatTheHaidle puzzle is 29 August 2026. The same date always
 // selects the same image, while a new date selects the next one.
@@ -75,14 +75,14 @@ function dateLabel() {
 function resultText() {
   const tiles = Array.from({ length: 6 }, (_, index) => {
     if (index >= resultTiles.length) return "⬛";
-    return resultTiles[index] ? "🟩" : "⬜";
+    return resultTiles[index] ? "🟩" : "🟥";
   });
   return `WhatTheHaidle - ${dateLabel()}\n${tiles.join("")}`;
 }
 
 function openShareDialog(won) {
   shareGrid.textContent = resultText();
-  shareSummary.textContent = won ? `Solved in ${resultTiles.length} of 6 guesses` : "Six guesses used";
+  shareSummary.textContent = won ? `Solved in ${resultTiles.length} of 6 guesses` : "It was WhatTheHai! Better luck next time.";
   copyNote.textContent = "";
   shareDialog.showModal();
 }
