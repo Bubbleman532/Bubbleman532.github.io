@@ -35,7 +35,7 @@ let finished = false;
 let resultTiles = [];
 
 function normalise(value) {
-  return value.toLowerCase().trim().replace(/[^a-z ]/g, "").replace(/\s+/g, " ");
+  return value.toLowerCase()//.trim().replace(/[^a-z ]/g, "").replace(/\s+/g, " ");
 }
 
 function loadPuzzle() {
