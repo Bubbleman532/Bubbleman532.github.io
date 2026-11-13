@@ -25,7 +25,7 @@ function dailyPuzzleIndex() {
   const todayAtMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
   const daysSinceFirstGame = Math.max(0, Math.floor((todayAtMidnight - firstGameDate) / millisecondsPerDay));
-  return daysSinceFirstGame + 1;
+  return (daysSinceFirstGame % 28) + 19;
 }
 
 const puzzle = { image: `images/day${dailyPuzzleIndex()}.jpg` };
